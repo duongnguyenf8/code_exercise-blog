@@ -10,12 +10,17 @@ import tagStyles from './tagStyles.module.scss';
  * @param {string} [props.className] - The tag class name. Can be used to apply custom styles.
  */
 
-export default function Tag({ to = '#', text, className = '' }) {
+export default function Tag({
+  to = '#',
+  text = '',
+  title = text,
+  className = '',
+}) {
   const { tag: tagTagStyle } = tagStyles;
 
   return (
     <Links to={to} className={`${tagTagStyle} ${className}`}>
-      {text.toLowerCase().trim()}
+      {title.toLowerCase().trim()}
     </Links>
   );
 }
@@ -28,5 +33,6 @@ Tag.propTypes = {
     }),
   ]),
   text: propTypes.string,
+  title: propTypes.string,
   className: propTypes.string,
 };

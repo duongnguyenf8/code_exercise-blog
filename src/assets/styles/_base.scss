@@ -88,10 +88,16 @@ img {
   flex-direction: row !important;
   gap: 8px;
 }
+
 .column {
   display: flex;
   flex-direction: column !important;
   gap: 8px;
+}
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .link {

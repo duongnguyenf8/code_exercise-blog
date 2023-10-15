@@ -2,6 +2,7 @@ import propTypes from 'prop-types';
 import Header from '@/layout/Header';
 import Main from '@/layout/Main';
 import Footer from '@/layout/Footer';
+import Tag from '@/components/Tag';
 
 /**
  * @param {React.ReactNode} children - The children of the Layout.
@@ -10,7 +11,13 @@ import Footer from '@/layout/Footer';
 export default function Layout({ children }) {
   return (
     <>
-      <Header>Bài tập về nhà buổi 37 :v</Header>
+      <Header>
+        <Tag
+          title='Xin chào, em là Dương, mọi người có thể xem document, hướng dẫn làm bài
+        tập tại ĐÂY'
+          to='https://github.com/duongnguyenf8/code_fullstack-exercise37'
+        />
+      </Header>
       <Main>{children}</Main>
       <Footer>Chúc mọi người làm bài tập về nhà vui vẻ :v</Footer>
     </>

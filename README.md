@@ -8,6 +8,40 @@ Các resources:
 
 - **auth/**
 
+  - **/profile**(get): get profile
+
+    Headers: Authorization Bearer
+
+    Response:
+
+    ```json
+    {
+      "code": 200,
+      "status_code": "SUCCESS",
+      "message": "Thành công",
+      "data": {
+        "_id": "652c2071afd8990b69a321b4",
+        "name": "Nguyễn Dương✅",
+        "email": "nguyenduong@fullstack.edu.vn",
+        "avatar": "",
+        "blogs": [
+          {
+            "_id": "652c20a8afd8990b69a321c1",
+            "title": "Hello world",
+            "content": "First title!\n\nhttps://code-fullstack-exercise37.vercel.app\n\ndocument.write('1')",
+            "userId": "652c2071afd8990b69a321b4",
+            "createdAt": "2023-10-15T17:26:00.257Z",
+            "__v": 0
+          }
+        ],
+        "createdAt": "2023-10-15T17:25:05.447Z",
+        "updatedAt": "2023-10-15T18:47:57.733Z"
+      }
+    }
+    ```
+
+    ***
+
   - **/login**(Post): login
 
     Body: `email`, `password`

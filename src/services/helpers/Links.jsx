@@ -20,7 +20,6 @@ export default function Links({
   className = '',
 }) {
   const location = useLocation();
-
   return (
     <>
       {location.pathname === to ? (
@@ -33,12 +32,18 @@ export default function Links({
         <span className='link'>
           {type === 'nav' ? (
             // If the type is nav, render a NavLink
-            <NavLink to={to} className={className}>
+            <NavLink
+              to={to}
+              className={className}
+              target={to.startsWith('http') ? '_blank' : ''}>
               {title || children}
             </NavLink>
           ) : (
             // Otherwise, render a regular link
-            <Link to={to} className={className}>
+            <Link
+              to={to}
+              className={className}
+              target={to.startsWith('http') ? '_blank' : ''}>
               {title || children}
             </Link>
           )}
