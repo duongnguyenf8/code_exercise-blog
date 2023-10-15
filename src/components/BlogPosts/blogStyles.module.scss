@@ -34,4 +34,12 @@
     left: 48px;
     font-size: var(--font-14, 14px);
   }
+  .time-reading {
+    position: absolute;
+    bottom: 40px;
+    right: 20px;
+    font-size: var(--font-14, 14px);
+    color: var(--main-color, #6eeb83);
+    font-style: italic;
+  }
 }

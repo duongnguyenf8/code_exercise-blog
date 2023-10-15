@@ -26,6 +26,7 @@ export default function BlogPosts({ store, data = {} }) {
     name: nameStyle,
     date: dateStyle,
     time: timeStyle,
+    'time-reading': timeReadingStyle,
   } = blogStyles;
   useEffect(() => {
     if (location.pathname === endpoint.blogs) {
@@ -63,6 +64,25 @@ export default function BlogPosts({ store, data = {} }) {
     }
   }, [sectionStyle, loading, location, store]);
 
+  /**
+   * Get time reading
+   * @param {string} str - The string to split
+   * @param {string} str2 - The second string to split
+   * @returns {string} The time reading
+   */
+  const getTimeReading = (str, str2 = '') => {
+    const words = (str + str2).split(' ');
+    const timeSecond = Math.ceil(words.length / 3);
+    const timeMinute = Math.floor(timeSecond / 60);
+    const timeHour = Math.floor(timeMinute / 60);
+    if (timeMinute === 0) {
+      return `${timeSecond}s`;
+    }
+    if (timeMinute > 60) {
+      return `${timeHour}h`;
+    }
+    return `${timeMinute}m`;
+  };
   return (
     <div className='blog-list'>
       {location.pathname !== endpoint.blogs && (
@@ -135,6 +155,9 @@ export default function BlogPosts({ store, data = {} }) {
                     (location.pathname === endpoint.blogs
                       ? removeAccents(blog.userId.name) ?? '...'
                       : removeAccents(user.name) ?? '...')}
+                </span>
+                <span className={timeReadingStyle}>
+                  About {getTimeReading(blog.content, blog.title)} reading.
                 </span>
                 <hr style={{ width: 100 + '%' }} />
               </Section>
