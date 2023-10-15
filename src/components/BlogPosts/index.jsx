@@ -21,6 +21,7 @@ export default function BlogPosts({ store, data = {} }) {
   const [user, setUser] = useState({});
   const [blogs, setBlogs] = useState([]);
   const {
+    moment: momentStyle,
     title: titleStyle,
     section: sectionStyle,
     name: nameStyle,
@@ -76,12 +77,12 @@ export default function BlogPosts({ store, data = {} }) {
     const timeMinute = Math.floor(timeSecond / 60);
     const timeHour = Math.floor(timeMinute / 60);
     if (timeMinute === 0) {
-      return `${timeSecond}s`;
+      return `${timeSecond} giây`;
     }
     if (timeMinute > 60) {
-      return `${timeHour}h`;
+      return `${timeHour} giờ`;
     }
-    return `${timeMinute}m`;
+    return `${timeMinute} phút`;
   };
   return (
     <div className='blog-list'>
@@ -92,18 +93,22 @@ export default function BlogPosts({ store, data = {} }) {
         <div className='content'>
           {blogs.map((blog, index) => {
             const fullDate = getDate(blog.createdAt);
-            const { date, day, hours, mins } = fullDate;
+            const { moment, hours, mins } = fullDate;
+            const get12Hours = (hours) => {
+              if (hours > 12) {
+                return hours - 12 + 'h chiều';
+              }
+              return hours + 'h sáng';
+            };
             return (
               <Section className={sectionStyle} key={blog._id + `${index}`}>
-                <span className={dateStyle}>
-                  {day}
-                  <br />
-                  {date}
-                  <div className={timeStyle + ' date-group column'}>
-                    <span className='hours'>{hours + 'h'}</span>
-                    <span className='mins'>{mins + 'm'}</span>
+                <div className={dateStyle}>
+                  <span className={momentStyle}>{moment.fromNow()}</span>
+                  <div className={timeStyle + ' time-group column'}>
+                    <span className='hours'>{get12Hours(hours)}</span>
+                    <span className='mins'>{mins + ' phút'}</span>
                   </div>
-                </span>
+                </div>
                 <Avatar
                   name={
                     location.pathname === endpoint.blogs
@@ -157,7 +162,7 @@ export default function BlogPosts({ store, data = {} }) {
                       : removeAccents(user.name) ?? '...')}
                 </span>
                 <span className={timeReadingStyle}>
-                  About {getTimeReading(blog.content, blog.title)} reading.
+                  Khoảng {getTimeReading(blog.content, blog.title)} đọc.
                 </span>
                 <hr style={{ width: 100 + '%' }} />
               </Section>

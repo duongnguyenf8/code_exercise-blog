@@ -1,13 +1,25 @@
+import moment from 'moment/min/moment-with-locales';
+moment.locale('vi');
+/**
+ * Get date from date string
+ * @param {string} dateStr - Date string
+ * @returns {object} - Object contains date information
+ */
 export default function getDate(dateStr) {
   const fullDate = new Date(dateStr);
-  const day = fullDate.getDate();
-  const dayByWeek = fullDate.getDay();
-  const hours = fullDate.getHours();
-  const mins = fullDate.getMinutes();
-  const date = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  const format = moment(fullDate);
+  const year = format.year();
+  const months = format.month();
+  const day = format.date();
+  const date = format.date();
+  const hours = format.hours();
+  const mins = format.minutes();
   return {
+    moment: format,
+    year,
+    months,
     day,
-    date: date[+dayByWeek - 1] || `Sun`,
+    date,
     hours,
     mins,
   };

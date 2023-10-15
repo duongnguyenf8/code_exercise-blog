@@ -45,10 +45,12 @@ export default function StateProvider({ children }) {
               localStorage.setItem('userData', JSON.stringify(newUserData));
               action('userData', newUserData);
             } else {
-              action('userData', {});
               localStorage.removeItem('userData');
-              window.location.reload();
+              action('userData', {});
             }
+          } else {
+            localStorage.removeItem('userData');
+            action('userData', {});
           }
         }
       }

@@ -58,19 +58,27 @@ export default function Blog() {
           __html: format(blogData.content),
         }}
       />
+
       <Tag
         text={blogData.userId.name}
         to={path.profile + '/' + blogData.userId._id}
       />
-      <div className={dateStyle + ' date-group'}>
-        {Object.keys(getDate(blogData.createdAt)).map((key, index) => {
-          return (
-            <span key={key + index} className='date-group-item'>
-              {key}: {getDate(blogData.createdAt)[key]}
-            </span>
-          );
-        })}
+      <div className={dateStyle + ' date-group column'}>
+        <div>{getDate(blogData.createdAt).moment.fromNow()}</div>
+        <div className='time-group'>
+          {Object.keys(getDate(blogData.createdAt)).map((key, index) => {
+            const value = getDate(blogData.createdAt)[key];
+            if (typeof value !== 'object') {
+              return (
+                <span key={key + index} className='date-group-item'>
+                  {key}: {getDate(blogData.createdAt)[key]}
+                </span>
+              );
+            }
+          })}
+        </div>
       </div>
+
       <Button
         onClick={() => {
           navigate(path.blogs);

@@ -13,6 +13,10 @@
 }
 
 .date {
+  box-shadow: 0 1px 0 var(--main-color, #6eeb83) inset;
+  padding-top: 8px;
+  margin-top: 8px;
+  margin-bottom: 8px;
   font-size: 0;
   * {
     color: var(--main-color, #6eeb83);
