@@ -1,0 +1,31 @@
+.wrap {
+  display: flex;
+  align-items: flex-end;
+  width: fit-content;
+  .avatar {
+    display: inline-block;
+    $size: 6.6rem;
+    width: $size;
+    height: $size;
+    flex-shrink: 0;
+    background-color: var(--main-color);
+    text-align: center;
+    border-radius: $size;
+    outline: 1px solid var(--background-color);
+    &::after {
+      content: attr(data-name);
+      color: var(--background-color);
+      font-size: calc($size / 2);
+      font-style: normal;
+      font-weight: 400;
+      line-height: $size;
+    }
+  }
+  .name {
+    color: var(--content-color);
+    font-size: 2.4rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
+}

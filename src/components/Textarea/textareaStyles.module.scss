@@ -1,0 +1,35 @@
+.textarea {
+  resize: none;
+  margin: 2px;
+  width: 400px;
+  min-height: 200px;
+  flex-shrink: 0;
+  display: block;
+  border-radius: 4px;
+  padding: 12px 16px;
+  align-items: center;
+  font-size: var(--font-16, 16px);
+  color: var(--content-color, #ffffff);
+  box-shadow: 0px 2px 7px 0px rgba(0, 0, 0, 0.08);
+  background: var(--background-color-gray, #30445b);
+  border: 1px solid var(--second-content-color, #a5a5a5);
+  overflow: auto;
+  word-wrap: break-word;
+  &::placeholder {
+    color: var(--second-content-color, #a5a5a5);
+  }
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+}
+.label {
+  margin-top: 8px;
+  display: block;
+  font-weight: 700;
+  font-style: normal;
+  font-family: 'Lexend Deca';
+  font-size: var(--font-14, 14px);
+  line-height: var(--font-14, 14px); /* 100% */
+  color: var(--main-color, #6eeb83);
+}

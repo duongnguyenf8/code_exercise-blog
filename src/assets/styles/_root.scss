@@ -1,0 +1,25 @@
+:root {
+  --max_width: 1440px;
+  --main-color: #{$green};
+  --second-color: #{$red};
+  --background-color: #{$black};
+  --background-color-gray: #{$gray};
+  --content-color: #{$white};
+  --second-content-color: #{$grey};
+  --red: #{$red};
+  --gray: #{$gray};
+  --grey: #{$grey};
+  --white: #{$white};
+  --black: #{$black};
+  --green: #{$green};
+  --transition-property: #{$transition-property};
+  --timing-function: #{$timing-function};
+  --font-14: calc(1.3rem + 0.13vw);
+  --font-16: calc(1.4rem + 0.14vw);
+  --font-18: calc(1.6rem + 0.16vw);
+  --font-22: calc(2rem + 0.2vw);
+  --supper-title: calc(3.4rem + 0.34vw);
+  --shadow-bold: -0.2px -0.2px 0 var(--main-color),
+    0.2px -0.2px 0 var(--main-color), -0.2px 0.2px 0 var(--main-color),
+    0.2px 0.2px 0 var(--main-color);
+}

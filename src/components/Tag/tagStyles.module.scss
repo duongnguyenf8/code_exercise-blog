@@ -1,0 +1,23 @@
+.tag {
+  display: flex;
+  width: fit-content;
+  padding: 0.8rem 2rem;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  border-radius: 10rem;
+  border: 1px solid var(--main-color);
+  //text style
+  color: var(--main-color);
+  font-size: 1.3rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  &:active {
+    --main-color: rgba(110, 235, 131, 0.8);
+  }
+  &::before{
+    content: "#";
+    font-style: italic;
+  }
+}

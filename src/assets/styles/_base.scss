@@ -1,0 +1,108 @@
+html {
+  font-size: 62.5%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scroll-padding-top: 7rem;
+  &::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+  * ::selection {
+    background: var(--main-color, $green);
+    color: var(--background-color, $black);
+  }
+}
+
+body {
+  background: var(--background-color, $black);
+  font-size: var(--font-16, calc(1.4rem + 0.14vw));
+  *,
+  *::before,
+  *::after {
+    transition-timing-function: var(--timing-function);
+    transition-duration: 0.25s;
+    transition-property: var(--transition-property, $transition-property);
+    font-family: 'Lexend Deca', sans-serif;
+  }
+  .container {
+    position: relative;
+    max-width: 100vw;
+    padding: 0 calc((100% - var(--max-width, $max_width)) / 2);
+    margin: 0 auto;
+  }
+}
+
+html,
+body,
+div {
+  scroll-behavior: smooth;
+  &::-webkit-scrollbar-thumb {
+    background: var(--content-color, $white);
+    border-radius: 99px;
+  }
+  &::-webkit-scrollbar-track {
+    background: var(--background-color, $black);
+  }
+}
+
+button,
+input,
+select,
+textarea {
+  outline: none;
+  border: none;
+  background: inherit;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--content-color, $white);
+  font-weight: 400;
+  font-family: 'DM Serif Display', serif;
+  font-size: var(--font-22, calc(2rem + 0.2vw));
+  word-wrap: break-word;
+}
+a,
+p,
+span {
+  font-weight: 500;
+  color: var(--content-color, $white);
+  font-size: var(--font-18, calc(1.6rem + 0.16vw));
+  word-wrap: break-word;
+}
+button {
+  cursor: pointer;
+}
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 0.75rem;
+  object-fit: contain;
+}
+
+[class*='-group'] {
+  display: flex;
+  flex-direction: row !important;
+  gap: 8px;
+}
+.column {
+  display: flex;
+  flex-direction: column !important;
+  gap: 8px;
+}
+
+.link {
+  font-family: 'DM Serif Display', serif;
+  color: var(--content-color, $white);
+  text-decoration: underline;
+  &:hover {
+    color: var(--main-color, $green);
+  }
+}
+.border {
+  border: 1px solid var(--content-color, $white);
+  color: var(--content-color, $white);
+}

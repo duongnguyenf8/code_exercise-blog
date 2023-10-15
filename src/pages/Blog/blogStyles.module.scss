@@ -1,0 +1,21 @@
+.section {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.title {
+  margin-top: 8px;
+  color: var(--main-color, #6eeb83);
+  font-size: var(--font-22, 22px);
+}
+.content {
+  margin: 8px 0 8px 0;
+}
+
+.date {
+  font-size: 0;
+  * {
+    color: var(--main-color, #6eeb83);
+    font-size: var(--font-14, 14px);
+  }
+}
