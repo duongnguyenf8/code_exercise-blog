@@ -1,6 +1,6 @@
 import propTypes from 'prop-types';
 import homeStyles from './styles/homeStyles.module.scss';
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import UserAction from './components/UserAction';
 import BlogPosts from '@/components/BlogPosts';
 import Notify from '@/components/Notify';
@@ -11,7 +11,7 @@ import Notify from '@/components/Notify';
  * @param {function} props.store.getData - The request to get the new global state value.
  */
 export default function Home({ store }) {
-  const { getData } = store;
+  const { getData, reload } = store;
   const [msg, setMsg] = useState({
     type: 'success',
     message: '',
@@ -20,6 +20,18 @@ export default function Home({ store }) {
   useLayoutEffect(() => {
     getData();
   }, []);
+
+  useEffect(() => {
+    const preReload = async (e) => {
+      if ((e.key === 'r' && e.ctrlKey) || e.key === 'F5') {
+        e.preventDefault();
+        reload();
+      }
+    };
+    window.addEventListener('keydown', preReload);
+    return () => window.removeEventListener('keydown', preReload);
+  }, [reload]);
+
   return (
     <div className='home-page'>
       <h1 className={titleStyle}>Blogger</h1>

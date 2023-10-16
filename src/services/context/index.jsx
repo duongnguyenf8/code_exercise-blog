@@ -4,6 +4,7 @@ import { Provider } from './Provider';
 import getData from '../helpers/getData';
 import server, { PER_PAGE } from '../configs';
 import HttpClient from '../helpers/httpClient';
+import initialState from './initialState';
 const { SERVER_API, endpoint } = server;
 const client = new HttpClient(SERVER_API);
 
@@ -15,13 +16,7 @@ const client = new HttpClient(SERVER_API);
  */
 
 export default function StateProvider({ children }) {
-  const [state, setState] = useState({
-    userData: JSON.parse(localStorage.getItem('userData')) || {},
-    blogs: [],
-    loading: false,
-    page: 1,
-    hasMoreData: true,
-  });
+  const [state, setState] = useState(initialState);
   /**
    * Check the user authentication status
    */
@@ -44,17 +39,21 @@ export default function StateProvider({ children }) {
               };
               localStorage.setItem('userData', JSON.stringify(newUserData));
               action('userData', newUserData);
+              return true;
             } else {
               localStorage.removeItem('userData');
               action('userData', {});
+              return false;
             }
           } else {
             localStorage.removeItem('userData');
             action('userData', {});
+            return false;
           }
         }
       }
     }
+    return true;
   };
 
   /**
@@ -89,6 +88,29 @@ export default function StateProvider({ children }) {
     }
   };
 
+  /**
+   * Reload the page
+   * @async
+   */
+  const reload = async () => {
+    action('loading', true);
+    await checkAuth()
+      .then(() => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        });
+        action('page', 1);
+        action('blogs', []);
+        action('hasMoreData', true);
+        handleGetData(1);
+      })
+      .catch(() => {
+        window.location.reload();
+      })
+      .finally(() => action('loading', false));
+  };
+
   useLayoutEffect(() => {
     checkAuth();
   }, []);
@@ -99,6 +121,7 @@ export default function StateProvider({ children }) {
         getState,
         action,
         checkAuth,
+        reload,
         getData: handleGetData,
       }}>
       {children}
