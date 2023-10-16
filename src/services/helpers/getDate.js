@@ -11,9 +11,18 @@ export default function getDate(dateStr) {
   const year = format.year();
   const months = format.month();
   const day = format.date();
-  const date = format.date();
   const hours = format.hours();
   const mins = format.minutes();
+  const arrayDate = [
+    'Chủ nhật',
+    'Thứ 2',
+    'Thứ 3',
+    'Thứ 4',
+    'Thứ 5',
+    'Thứ 6',
+    'Thứ 7',
+  ];
+  const date = arrayDate[format.day()];
   return {
     moment: format,
     year,

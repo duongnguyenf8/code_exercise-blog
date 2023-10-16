@@ -1,4 +1,4 @@
-## Bài tập về nhà buổi 37 - Blog with login
+## Bài tập về nhà - Blog login with Datepicker
 
 1: API Server
 
@@ -178,7 +178,7 @@ Các resources:
 
 2: Chức năng chính:
 
-**[https://code-fullstack-exercise37.vercel.app/](https://code-fullstack-exercise37.vercel.app)**
+**[https://code-exercise-blog.vercel.app/](https://code-exercise-blog.vercel.app)**
 
 Đăng nhập
 
@@ -187,6 +187,8 @@ Các resources:
 Logout
 
 Khi đăng nhập xong có thể post bài
+
+Chọn ngày khi post bài.
 
 Khi chưa đăng nhập không hiển thị form post bài
 

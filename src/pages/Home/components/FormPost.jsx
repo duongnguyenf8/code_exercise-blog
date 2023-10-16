@@ -5,6 +5,10 @@ import propTypes from 'prop-types';
 import { useState } from 'react';
 import Textarea from '@/components/Textarea';
 import { format } from '@/services/helpers/computedStr';
+import { Datepicker } from '@mobiscroll/react';
+import getDate from '@/services/helpers/getDate';
+import '@mobiscroll/react/dist/css/mobiscroll.scss';
+
 /**
  * A register component that handles user authentication.
  * @param {object} props - The props of the component.
@@ -19,10 +23,28 @@ export default function FormPost({ store, setMsg }) {
     title: '',
     content: '',
   });
+  const [picker, setDate] = useState({
+    date: '',
+    useDate: false,
+    label: 'Set time to post!',
+  });
   const { action, getState, checkAuth } = store;
   const blogs = getState('blogs');
   const userData = getState('userData');
   const loading = getState('loading');
+
+  function resetForm() {
+    setBlog({
+      title: '',
+      content: '',
+    });
+    setDate({
+      date: '',
+      useDate: false,
+      label: 'Set time to post!',
+    });
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
     await checkAuth();
@@ -30,9 +52,29 @@ export default function FormPost({ store, setMsg }) {
       msg: '',
       ...prev,
     }));
+
     const computedContent = format(blog.content, 'textarea');
     const computedTitle = format(blog.title, 'input');
     if (computedContent.length > 0 && computedTitle.length > 0) {
+      if (picker.useDate) {
+        let { moment, day, date, hours, mins } = getDate(picker.date);
+        if (hours === 0) {
+          hours = new Date().getHours();
+        }
+        if (mins === 0) {
+          mins = new Date().getMinutes();
+        }
+        setDate({
+          ...picker,
+          label: `Bài viết của bạn sẽ được đăng vào: ${moment
+            .fromNow()
+            .replace(
+              'vài giây trước',
+              'vài giây sau'
+            )}, ${date}, ngày ${day}, lúc ${hours} giờ, ${mins} phút`,
+        });
+        return setTimeout(() => resetForm(), 4000);
+      }
       action('loading', true);
       const { data = {}, message = '' } = await postBlog(
         {
@@ -54,10 +96,7 @@ export default function FormPost({ store, setMsg }) {
           msg: 'Thêm bài viết thành công!',
         });
         action('blogs', [data, ...blogs]);
-        setBlog({
-          title: '',
-          content: '',
-        });
+        return resetForm();
       }
     } else {
       if (computedTitle.length === 0) {
@@ -98,6 +137,15 @@ export default function FormPost({ store, setMsg }) {
         value={blog.content}
         onChange={(e) => {
           setBlog({ ...blog, content: e.target.value });
+        }}
+      />
+      <Datepicker
+        label={picker.label}
+        select='date'
+        min={new Date()}
+        value={picker.date}
+        onChange={(e) => {
+          setDate({ useDate: true, date: e.value });
         }}
       />
       <Button
