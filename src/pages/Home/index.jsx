@@ -21,10 +21,7 @@ export default function Home({ store }) {
     const preReload = async (e) => {
       if ((e.key === 'r' && e.ctrlKey) || e.key === 'F5') {
         e.preventDefault();
-        setMsg((prev) => ({
-          msg: '',
-          ...prev,
-        }));
+        setMsg({ ...msg, message: '' });
         reload();
       }
     };
@@ -33,13 +30,12 @@ export default function Home({ store }) {
   }, [reload]);
 
   const { title: titleStyle } = homeStyles;
-
   return (
     <div className='home-page'>
       <h1 className={titleStyle}>Blogger</h1>
-      <UserAction setMsg={setMsg} store={store} />
-      <BlogPosts store={store} />
-      {msg.msg && <Notify message={msg.msg} type={msg.type} />}
+      <UserAction msg={msg} setMsg={setMsg} store={store} />
+      <BlogPosts store={store} setMsg={setMsg} msg={msg} />
+      {msg.message && <Notify message={msg.message} type={msg.type} />}
     </div>
   );
 }

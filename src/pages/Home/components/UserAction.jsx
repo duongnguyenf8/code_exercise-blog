@@ -13,7 +13,7 @@ import FormPost from './FormPost';
  * @param {function} props.store.action - The setState for global action.
  * @param {function} props.setMsg - The setState notify to Home Component.
  */
-export default function UserAction({ store, setMsg }) {
+export default function UserAction({ store, setMsg, msg }) {
   const navigate = useNavigate();
   const { action } = store;
   const userData = store.getState('userData');
@@ -30,7 +30,7 @@ export default function UserAction({ store, setMsg }) {
       ) : (
         <div className='user-action' style={{ position: 'relative' }}>
           <Avatar name={userData.name} to='/@me' />
-          <FormPost store={store} setMsg={setMsg} />
+          <FormPost store={store} setMsg={setMsg} msg={msg} />
           <Button
             type='button'
             style='secondary'
@@ -42,8 +42,8 @@ export default function UserAction({ store, setMsg }) {
             onClick={async () => {
               action('loading', true);
               const { message } = await logout();
-              console.log('message', message);
-              setMsg((prev) => ({ ...prev, msg: '' }));
+              setMsg({ ...msg, message: '' });
+
               action('loading', false);
               if (message) {
                 action('userData', {});
@@ -61,4 +61,5 @@ export default function UserAction({ store, setMsg }) {
 UserAction.propTypes = {
   store: propTypes.object,
   setMsg: propTypes.func,
+  msg: propTypes.object,
 };

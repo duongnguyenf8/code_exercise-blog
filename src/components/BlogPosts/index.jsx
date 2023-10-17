@@ -15,7 +15,7 @@ import { useLocation } from 'react-router-dom';
  * @param {object} store - The redux store
  * @param {object} data - The data to render
  */
-export default function BlogPosts({ store, data = {} }) {
+export default function BlogPosts({ msg, setMsg, store, data = {} }) {
   const location = useLocation();
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState({});
@@ -55,17 +55,20 @@ export default function BlogPosts({ store, data = {} }) {
           if (!loading) {
             setLoading(true);
             getData(page + 1).finally(() => setLoading(false));
-          } else {
-            return;
+          }
+          if (msg.message) {
+            setMsg({ ...msg, message: '' });
           }
         }
       };
       window.addEventListener('scroll', handleScroll);
-      return () => window.removeEventListener('scroll', handleScroll);
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+      };
     } else {
       return () => {};
     }
-  }, [sectionStyle, loading, location, store]);
+  }, [loading, location.pathname, msg, sectionStyle, setMsg, store]);
 
   /**
    * Get time reading
@@ -181,4 +184,6 @@ export default function BlogPosts({ store, data = {} }) {
 BlogPosts.propTypes = {
   store: propTypes.object,
   data: propTypes.object,
+  msg: propTypes.object,
+  setMsg: propTypes.func,
 };

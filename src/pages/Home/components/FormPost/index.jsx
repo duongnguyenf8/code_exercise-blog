@@ -18,7 +18,7 @@ import './formPost.scss';
  * @param {function} props.store.getData - The request to get the new global state value.
  * @param {function} props.setMsg - The setState msg to notify.
  */
-export default function FormPost({ store, setMsg }) {
+export default function FormPost({ store, setMsg, msg }) {
   const [blog, setBlog] = useState({
     title: '',
     content: '',
@@ -47,10 +47,8 @@ export default function FormPost({ store, setMsg }) {
   async function handleSubmit(e) {
     e.preventDefault();
     checkAuth().then(async (userData) => {
-      setMsg((prev) => ({
-        msg: '',
-        ...prev,
-      }));
+      setMsg({ ...msg, message: '' });
+
       const computedContent = format(blog.content, 'textarea');
       const computedTitle = format(blog.title, 'input');
       if (computedContent.length > 0 && computedTitle.length > 0) {
@@ -91,7 +89,7 @@ export default function FormPost({ store, setMsg }) {
         } else {
           setMsg({
             type: 'success',
-            msg: 'Thêm bài viết thành công!',
+            message: 'Thêm bài viết thành công!',
           });
           action('blogs', [data, ...blogs]);
           return resetForm();
@@ -100,19 +98,19 @@ export default function FormPost({ store, setMsg }) {
         if (computedTitle.length === 0) {
           setMsg({
             type: 'failed',
-            msg: 'Vui lòng nhập tiêu đề bài viết',
+            message: 'Vui lòng nhập tiêu đề bài viết',
           });
           e.target.title.focus();
         } else if (computedContent.length === 0) {
           setMsg({
             type: 'failed',
-            msg: 'Vui lòng nhập nội dung bài viết',
+            message: 'Vui lòng nhập nội dung bài viết',
           });
           e.target.content.focus();
         } else {
           setMsg({
             type: 'failed',
-            msg: 'Vui lòng xem lại nội dung',
+            message: 'Vui lòng xem lại nội dung',
           });
           e.target.title.focus();
         }
@@ -161,4 +159,5 @@ export default function FormPost({ store, setMsg }) {
 FormPost.propTypes = {
   store: propTypes.object,
   setMsg: propTypes.func,
+  msg: propTypes.object,
 };

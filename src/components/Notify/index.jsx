@@ -57,43 +57,45 @@ export default function Notify({
     const child = notifyRef.current;
     !pause && (parent.removeChild?.(child), parent?.appendChild?.(child));
   }, [timeout, pause, notifyRef]);
-  return (
-    <div
-      className={classNameNotify}
-      style={{
-        animationDuration: `${timeout}s`,
-      }}
-      onMouseOver={() => {
-        notifyRef.current.style.animationPlayState = 'paused';
-        timeLineRef.current.style.animationPlayState = 'paused';
-        setPause(true);
-      }}
-      onMouseOut={() => {
-        notifyRef.current.style.animationPlayState = 'running';
-        timeLineRef.current.style.animationPlayState = 'running';
-        setPause(false);
-      }}
-      ref={notifyRef}>
-      <span className={messageTagStyle}>
-        {message}
-        {message.slice(-1) !== '!' ? '!' : ''}
-      </span>
-      <img src={notifyIcon} alt={message} className={notifyIconStyle} />
+  if (message) {
+    return (
       <div
-        className={`${timelineStyle} ${
-          type === 'success' ? notifySuccessStyle : notifyFailedStyle
-        }`}>
+        className={classNameNotify}
+        style={{
+          animationDuration: `${timeout}s`,
+        }}
+        onMouseOver={() => {
+          notifyRef.current.style.animationPlayState = 'paused';
+          timeLineRef.current.style.animationPlayState = 'paused';
+          setPause(true);
+        }}
+        onMouseOut={() => {
+          notifyRef.current.style.animationPlayState = 'running';
+          timeLineRef.current.style.animationPlayState = 'running';
+          setPause(false);
+        }}
+        ref={notifyRef}>
+        <span className={messageTagStyle}>
+          {message}
+          {message.slice(-1) !== '!' ? '!' : ''}
+        </span>
+        <img src={notifyIcon} alt={message} className={notifyIconStyle} />
         <div
-          className={`${lineStyle}`}
-          style={{
-            // 1.2 because the timing function of classNameNotify is custom cubic
-            animationDuration: `${timeout / 1.2}s`,
-          }}
-          ref={timeLineRef}
-        />
+          className={`${timelineStyle} ${
+            type === 'success' ? notifySuccessStyle : notifyFailedStyle
+          }`}>
+          <div
+            className={`${lineStyle}`}
+            style={{
+              // 1.2 because the timing function of classNameNotify is custom cubic
+              animationDuration: `${timeout / 1.2}s`,
+            }}
+            ref={timeLineRef}
+          />
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 Notify.propTypes = {
   message: propTypes.string,
