@@ -21,13 +21,15 @@ export default function Home({ store }) {
     const preReload = async (e) => {
       if ((e.key === 'r' && e.ctrlKey) || e.key === 'F5') {
         e.preventDefault();
-        setMsg({ ...msg, message: '' });
+        if (msg.message) {
+          setMsg({ ...msg, message: '' });
+        }
         reload();
       }
     };
     window.addEventListener('keydown', preReload);
     return () => window.removeEventListener('keydown', preReload);
-  }, [reload]);
+  }, [msg, reload]);
 
   const { title: titleStyle } = homeStyles;
   return (

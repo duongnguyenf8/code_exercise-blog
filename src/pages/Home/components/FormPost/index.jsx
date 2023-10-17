@@ -47,7 +47,9 @@ export default function FormPost({ store, setMsg, msg }) {
   async function handleSubmit(e) {
     e.preventDefault();
     checkAuth().then(async (userData) => {
-      setMsg({ ...msg, message: '' });
+      if (msg.message) {
+        setMsg({ ...msg, message: '' });
+      }
 
       const computedContent = format(blog.content, 'textarea');
       const computedTitle = format(blog.title, 'input');

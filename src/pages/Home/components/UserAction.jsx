@@ -42,8 +42,9 @@ export default function UserAction({ store, setMsg, msg }) {
             onClick={async () => {
               action('loading', true);
               const { message } = await logout();
-              setMsg({ ...msg, message: '' });
-
+              if (msg.message) {
+                setMsg({ ...msg, message: '' });
+              }
               action('loading', false);
               if (message) {
                 action('userData', {});
