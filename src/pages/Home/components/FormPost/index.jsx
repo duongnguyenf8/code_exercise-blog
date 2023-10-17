@@ -1,5 +1,5 @@
 import Button from '@/components/Button';
-import postBlog from '../helpers/postBlog';
+import postBlog from '../../helpers/postBlog';
 import Input from '@/components/Input/Input';
 import propTypes from 'prop-types';
 import { useState } from 'react';
@@ -8,7 +8,7 @@ import { format } from '@/services/helpers/computedStr';
 import { Datepicker } from '@mobiscroll/react';
 import getDate from '@/services/helpers/getDate';
 import '@mobiscroll/react/dist/css/mobiscroll.scss';
-
+import './formPost.scss';
 /**
  * A register component that handles user authentication.
  * @param {object} props - The props of the component.
@@ -30,7 +30,6 @@ export default function FormPost({ store, setMsg }) {
   });
   const { action, getState, checkAuth } = store;
   const blogs = getState('blogs');
-  const userData = getState('userData');
   const loading = getState('loading');
 
   function resetForm() {
@@ -47,79 +46,80 @@ export default function FormPost({ store, setMsg }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    await checkAuth();
-    setMsg((prev) => ({
-      msg: '',
-      ...prev,
-    }));
-
-    const computedContent = format(blog.content, 'textarea');
-    const computedTitle = format(blog.title, 'input');
-    if (computedContent.length > 0 && computedTitle.length > 0) {
-      if (picker.useDate) {
-        let { moment, day, date, hours, mins } = getDate(picker.date);
-        if (hours === 0) {
-          hours = new Date().getHours();
+    checkAuth().then(async (userData) => {
+      setMsg((prev) => ({
+        msg: '',
+        ...prev,
+      }));
+      const computedContent = format(blog.content, 'textarea');
+      const computedTitle = format(blog.title, 'input');
+      if (computedContent.length > 0 && computedTitle.length > 0) {
+        if (picker.useDate) {
+          let { moment, day, date, hours, mins } = getDate(picker.date);
+          if (hours === 0) {
+            hours = new Date().getHours();
+          }
+          if (mins === 0) {
+            mins = new Date().getMinutes();
+          }
+          setDate({
+            ...picker,
+            label: `Bài viết của bạn sẽ được đăng vào: ${moment
+              .fromNow()
+              .replace(
+                'vài giây trước',
+                'vài giây sau'
+              )}, ${date}, ngày ${day}, lúc ${hours} giờ, ${mins} phút`,
+          });
+          return setTimeout(() => resetForm(), 5000);
         }
-        if (mins === 0) {
-          mins = new Date().getMinutes();
+        action('loading', true);
+        const { data = {}, message = '' } = await postBlog(
+          {
+            title: computedTitle,
+            content: computedContent,
+          },
+          userData.accessToken
+        );
+        action('loading', false);
+        if (JSON.stringify(data) === '{}' && message) {
+          setMsg({
+            type: 'failed',
+            message: message,
+          });
+          return;
+        } else {
+          setMsg({
+            type: 'success',
+            msg: 'Thêm bài viết thành công!',
+          });
+          action('blogs', [data, ...blogs]);
+          return resetForm();
         }
-        setDate({
-          ...picker,
-          label: `Bài viết của bạn sẽ được đăng vào: ${moment
-            .fromNow()
-            .replace(
-              'vài giây trước',
-              'vài giây sau'
-            )}, ${date}, ngày ${day}, lúc ${hours} giờ, ${mins} phút`,
-        });
-        return setTimeout(() => resetForm(), 4000);
-      }
-      action('loading', true);
-      const { data = {}, message = '' } = await postBlog(
-        {
-          title: computedTitle,
-          content: computedContent,
-        },
-        userData.accessToken
-      );
-      action('loading', false);
-      if (JSON.stringify(data) === '{}' && message) {
-        setMsg({
-          type: 'failed',
-          message: message,
-        });
-        return;
       } else {
-        setMsg({
-          type: 'success',
-          msg: 'Thêm bài viết thành công!',
-        });
-        action('blogs', [data, ...blogs]);
-        return resetForm();
+        if (computedTitle.length === 0) {
+          setMsg({
+            type: 'failed',
+            msg: 'Vui lòng nhập tiêu đề bài viết',
+          });
+          e.target.title.focus();
+        } else if (computedContent.length === 0) {
+          setMsg({
+            type: 'failed',
+            msg: 'Vui lòng nhập nội dung bài viết',
+          });
+          e.target.content.focus();
+        } else {
+          setMsg({
+            type: 'failed',
+            msg: 'Vui lòng xem lại nội dung',
+          });
+          e.target.title.focus();
+        }
       }
-    } else {
-      if (computedTitle.length === 0) {
-        setMsg({
-          type: 'failed',
-          msg: 'Vui lòng nhập tiêu đề bài viết',
-        });
-        e.target.title.focus();
-      } else if (computedContent.length === 0) {
-        setMsg({
-          type: 'failed',
-          msg: 'Vui lòng nhập nội dung bài viết',
-        });
-        e.target.content.focus();
-      } else {
-        setMsg({
-          type: 'failed',
-          msg: 'Vui lòng xem lại nội dung',
-        });
-        e.target.title.focus();
-      }
-    }
+    });
   }
+
   return (
     <form onSubmit={handleSubmit}>
       <Input
@@ -140,8 +140,8 @@ export default function FormPost({ store, setMsg }) {
         }}
       />
       <Datepicker
-        label={picker.label}
         select='date'
+        label={picker.label}
         min={new Date()}
         value={picker.date}
         onChange={(e) => {

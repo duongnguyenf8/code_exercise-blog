@@ -52,10 +52,12 @@ export default function BlogPosts({ store, data = {} }) {
           bottom >=
             document.body.offsetHeight - section?.clientHeight * PER_PAGE - 1
         ) {
-          setLoading(true);
-          getData(page + 1).finally(() => {
-            setLoading(false);
-          });
+          if (!loading) {
+            setLoading(true);
+            getData(page + 1).finally(() => setLoading(false));
+          } else {
+            return;
+          }
         }
       };
       window.addEventListener('scroll', handleScroll);

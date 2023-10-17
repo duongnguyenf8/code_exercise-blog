@@ -13,7 +13,7 @@ export default async function logout(
   const { res, data } = await client.post(endpoint.logout, {}, '', accessToken);
   const { message } = data;
   if (message) {
-    localStorage.removeItem('userData');
+    localStorage.clear();
   }
   return { res, message };
 }

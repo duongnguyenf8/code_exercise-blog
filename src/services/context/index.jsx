@@ -33,27 +33,29 @@ export default function StateProvider({ children }) {
             });
             if (res.status === 200 && data.data) {
               const newAccessToken = data.data.token.accessToken;
+              const newRefreshToken = data.data.token.refreshToken;
               const newUserData = {
                 ...userData,
                 accessToken: newAccessToken,
+                refreshToken: newRefreshToken,
               };
               localStorage.setItem('userData', JSON.stringify(newUserData));
               action('userData', newUserData);
-              return true;
+              return newUserData;
             } else {
-              localStorage.removeItem('userData');
+              localStorage.clear();
               action('userData', {});
               return false;
             }
           } else {
-            localStorage.removeItem('userData');
+            localStorage.clear();
             action('userData', {});
             return false;
           }
         }
       }
     }
-    return true;
+    return userData;
   };
 
   /**
@@ -100,19 +102,16 @@ export default function StateProvider({ children }) {
           top: 0,
           behavior: 'smooth',
         });
-        action('page', 1);
-        action('blogs', []);
-        action('hasMoreData', true);
-        handleGetData(1);
       })
-      .catch(() => {
-        window.location.reload();
-      })
-      .finally(() => action('loading', false));
+      .finally(() => window.location.reload());
   };
 
   useLayoutEffect(() => {
-    checkAuth();
+    action('loading', true);
+    checkAuth()
+      .then(() => handleGetData())
+      .catch(() => reload())
+      .finally(() => action('loading', false));
   }, []);
 
   return (
