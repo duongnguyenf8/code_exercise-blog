@@ -45,12 +45,12 @@ export default function StateProvider({ children }) {
             } else {
               localStorage.clear();
               action('userData', {});
-              return false;
+              throw new Error(res.data.message);
             }
           } else {
             localStorage.clear();
             action('userData', {});
-            return false;
+            throw new Error(res.data.message);
           }
         }
       }
@@ -113,7 +113,6 @@ export default function StateProvider({ children }) {
       .catch(() => reload())
       .finally(() => action('loading', false));
   }, []);
-
   return (
     <Provider
       value={{

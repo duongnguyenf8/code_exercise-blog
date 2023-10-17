@@ -15,7 +15,7 @@ import FormPost from './FormPost';
  */
 export default function UserAction({ store, setMsg, msg }) {
   const navigate = useNavigate();
-  const { action } = store;
+  const { action, checkAuth } = store;
   const userData = store.getState('userData');
   const loading = store.getState('loading');
   return (
@@ -41,14 +41,17 @@ export default function UserAction({ store, setMsg, msg }) {
             }}
             onClick={async () => {
               action('loading', true);
-              const { message } = await logout();
-              if (msg.message) {
-                setMsg({ ...msg, message: '' });
-              }
-              action('loading', false);
-              if (message) {
-                action('userData', {});
-              }
+              await checkAuth().then(async (userData) => {
+                logout(userData.accessToken).then(({ message }) => {
+                  if (msg.message) {
+                    setMsg({ ...msg, message: '' });
+                  }
+                  action('loading', false);
+                  if (message) {
+                    action('userData', {});
+                  }
+                });
+              });
             }}
             disabled={loading}>
             Sign out
