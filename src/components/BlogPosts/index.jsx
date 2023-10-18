@@ -44,29 +44,25 @@ export default function BlogPosts({ msg, setMsg, store, data = {} }) {
     if (location.pathname === endpoint.blogs) {
       const { getState, getData } = store;
       const page = getState('page');
-      const handleScroll = () => {
+      const handleScroll = async () => {
         const bottom = window.innerHeight + window.scrollY;
         const section = document.querySelector('.' + sectionStyle);
         if (
           !loading &&
           bottom >=
-            document.body.offsetHeight - section?.clientHeight * PER_PAGE - 1
+            document.body.offsetHeight - section?.clientHeight * (PER_PAGE - 1)
         ) {
           if (!loading) {
+            if (msg.message) {
+              setMsg({ ...msg, message: '' });
+            }
             setLoading(true);
             getData(page + 1).finally(() => setLoading(false));
-          }
-          if (msg.message) {
-            setMsg({ ...msg, message: '' });
           }
         }
       };
       window.addEventListener('scroll', handleScroll);
-      return () => {
-        window.removeEventListener('scroll', handleScroll);
-      };
-    } else {
-      return () => {};
+      return () => window.removeEventListener('scroll', handleScroll);
     }
   }, [loading, location.pathname, msg, sectionStyle, setMsg, store]);
 

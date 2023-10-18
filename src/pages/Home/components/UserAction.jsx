@@ -15,7 +15,7 @@ import FormPost from './FormPost';
  */
 export default function UserAction({ store, setMsg, msg }) {
   const navigate = useNavigate();
-  const { action, checkAuth } = store;
+  const { action, getRefresh, reload } = store;
   const userData = store.getState('userData');
   const loading = store.getState('loading');
   return (
@@ -41,17 +41,44 @@ export default function UserAction({ store, setMsg, msg }) {
             }}
             onClick={async () => {
               action('loading', true);
-              await checkAuth().then(async (userData) => {
-                logout(userData.accessToken).then(({ message }) => {
-                  if (msg.message) {
-                    setMsg({ ...msg, message: '' });
-                  }
-                  action('loading', false);
-                  if (message) {
+              const { res } = await logout(userData.accessToken);
+              if (!res.ok && res.status === 401) {
+                await getRefresh()
+                  .then(async (userData) => {
+                    const { res } = await logout(userData.accessToken);
+                    if (res.ok) {
+                      localStorage.clear();
+                      action('userData', {});
+                      navigate(endpoint.signIn);
+                    } else {
+                      localStorage.clear();
+                      action('userData', {});
+                      reload();
+                    }
+                  })
+                  .catch(() => {
+                    localStorage.clear();
                     action('userData', {});
-                  }
-                });
-              });
+                    reload();
+                  })
+                  .finally(() => action('loading', false));
+              } else {
+                localStorage.clear();
+                action('userData', {});
+                navigate(endpoint.signIn);
+                action('loading', false);
+              }
+              // .then(({ message }) => {
+              //   if (msg.message) {
+              //     setMsg({ ...msg, message: '' });
+              //   }
+              //   if (message) {
+              //     action('userData', {});
+              //   }
+              // })
+              //   .catch(await () => {
+
+              // });
             }}
             disabled={loading}>
             Sign out

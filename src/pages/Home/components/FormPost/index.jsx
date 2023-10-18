@@ -22,16 +22,17 @@ export default function FormPost({ store, setMsg, msg }) {
   const [blog, setBlog] = useState({
     title: '',
     content: '',
+    date: '',
   });
   const [picker, setDate] = useState({
     date: '',
     useDate: false,
     label: 'Set time to post!',
   });
-  const { action, getState, checkAuth } = store;
+  const { action, getState, getRefresh } = store;
   const blogs = getState('blogs');
   const loading = getState('loading');
-
+  const userData = getState('userData');
   function resetForm() {
     setBlog({
       title: '',
@@ -46,85 +47,103 @@ export default function FormPost({ store, setMsg, msg }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    checkAuth()
-      .then(async (userData) => {
-        if (msg.message) {
-          setMsg({ ...msg, message: '' });
+
+    if (msg.message) {
+      setMsg({ ...msg, message: '' });
+    }
+    const computedContent = format(blog.content, 'textarea');
+    const computedTitle = format(blog.title, 'input');
+    if (computedContent.length > 0 && computedTitle.length > 0) {
+      const body = {
+        title: computedTitle,
+        content: computedContent,
+      };
+      if (picker.useDate) {
+        let { moment, day, date, hours, mins } = getDate(picker.date);
+        if (hours === 0) {
+          hours = new Date().getHours();
         }
-        const computedContent = format(blog.content, 'textarea');
-        const computedTitle = format(blog.title, 'input');
-        if (computedContent.length > 0 && computedTitle.length > 0) {
-          if (picker.useDate) {
-            let { moment, day, date, hours, mins } = getDate(picker.date);
-            if (hours === 0) {
-              hours = new Date().getHours();
+        if (mins === 0) {
+          mins = new Date().getMinutes();
+        }
+        setDate({
+          ...picker,
+          label: `Bài viết của bạn sẽ được đăng vào: ${moment
+            .fromNow()
+            .replace(
+              'vài giây trước',
+              'vài giây sau'
+            )}, ${date}, ngày ${day}, lúc ${hours} giờ, ${mins} phút`,
+        });
+        const datePost = moment.format('YYYY-MM-DD');
+        const timePost = datePost + ' ' + hours + ':' + mins;
+        // body.timeUp = timePost;
+        //console.log(timePost);
+        return timePost;
+      }
+      action('loading', true);
+      const { res, data = {} } = await postBlog(body, userData.accessToken);
+      action('loading', false);
+      if (+res.status === 401) {
+        await getRefresh()
+          .then(async (userData) => {
+            action('loading', true);
+            const { res, data = {} } = await postBlog(
+              body,
+              userData.accessToken
+            );
+            action('loading', false);
+            if (res.ok) {
+              setMsg({
+                type: 'success',
+                message: 'Thêm bài viết thành công!',
+              });
+              action('blogs', [data, ...blogs]);
+              return resetForm();
+            } else {
+              setMsg({
+                type: 'failed',
+                message: 'Some thing went wrong, please try again',
+              });
+              return;
             }
-            if (mins === 0) {
-              mins = new Date().getMinutes();
-            }
-            setDate({
-              ...picker,
-              label: `Bài viết của bạn sẽ được đăng vào: ${moment
-                .fromNow()
-                .replace(
-                  'vài giây trước',
-                  'vài giây sau'
-                )}, ${date}, ngày ${day}, lúc ${hours} giờ, ${mins} phút`,
-            });
-            return setTimeout(() => resetForm(), 5000);
-          }
-          action('loading', true);
-          const { data = {}, message = '' } = await postBlog(
-            {
-              title: computedTitle,
-              content: computedContent,
-            },
-            userData.accessToken
-          );
-          action('loading', false);
-          if (JSON.stringify(data) === '{}' && message) {
+          })
+          .catch(() => {
             setMsg({
               type: 'failed',
-              message: message,
+              message: 'Vui lòng đăng nhập lại',
             });
-            return;
-          } else {
-            setMsg({
-              type: 'success',
-              message: 'Thêm bài viết thành công!',
-            });
-            action('blogs', [data, ...blogs]);
             return resetForm();
-          }
-        } else {
-          if (computedTitle.length === 0) {
-            setMsg({
-              type: 'failed',
-              message: 'Vui lòng nhập tiêu đề bài viết',
-            });
-            e.target.title.focus();
-          } else if (computedContent.length === 0) {
-            setMsg({
-              type: 'failed',
-              message: 'Vui lòng nhập nội dung bài viết',
-            });
-            e.target.content.focus();
-          } else {
-            setMsg({
-              type: 'failed',
-              message: 'Vui lòng xem lại nội dung',
-            });
-            e.target.title.focus();
-          }
-        }
-      })
-      .catch(() => {
+          });
+      } else {
+        setMsg({
+          type: 'success',
+          message: 'Thêm bài viết thành công!',
+        });
+        action('blogs', [data, ...blogs]);
+        return resetForm();
+      }
+    } else {
+      if (computedTitle.length === 0) {
         setMsg({
           type: 'failed',
-          message: 'Vui lòng đăng nhập lại',
+          message: 'Vui lòng nhập tiêu đề bài viết',
         });
-        return resetForm();
-      });
+        e.target.title.focus();
+      } else if (computedContent.length === 0) {
+        setMsg({
+          type: 'failed',
+          message: 'Vui lòng nhập nội dung bài viết',
+        });
+        e.target.content.focus();
+      } else {
+        setMsg({
+          type: 'failed',
+          message: 'Vui lòng xem lại nội dung',
+        });
+        e.target.title.focus();
+      }
+    }
   }
 
   return (

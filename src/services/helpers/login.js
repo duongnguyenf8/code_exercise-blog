@@ -14,7 +14,7 @@ export default async function login({ email, password }) {
   };
   const { res, data: result } = await client.post(endpoint.login, body);
   const { data, message } = result;
-  if (!data && message) {
+  if (JSON.stringify(data) === '{}' && message) {
     return { res, message };
   } else {
     localStorage.setItem('userData', JSON.stringify(data));

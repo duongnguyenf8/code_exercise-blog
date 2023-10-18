@@ -11,9 +11,10 @@ export default async function logout(
   accessToken = JSON.parse(localStorage.getItem('userData')).accessToken
 ) {
   const { res, data } = await client.post(endpoint.logout, {}, '', accessToken);
-  const { message } = data;
-  if (message) {
-    localStorage.clear();
+  if (!res.ok) {
+    throw new Error('Error logging out.');
+  } else {
+    const { message } = data;
+    return { res, message };
   }
-  return { res, message };
 }

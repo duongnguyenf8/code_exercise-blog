@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import propTypes from 'prop-types';
 import { Provider } from './Provider';
 import getData from '../helpers/getData';
@@ -17,42 +17,53 @@ const client = new HttpClient(SERVER_API);
 
 export default function StateProvider({ children }) {
   const [state, setState] = useState(initialState);
+
+  /**
+   * Get the new refresh token
+   */
+  async function getRefreshToken() {
+    const userData = getState('userData');
+    if (userData && userData.refreshToken) {
+      const { res, data } = await client.post(endpoint.refreshToken, {
+        refreshToken: userData.refreshToken,
+      });
+      if (res.status === 200 && data.data) {
+        const newAccessToken = data.data.token.accessToken;
+        const newRefreshToken = data.data.token.refreshToken;
+        const newUserData = {
+          ...userData,
+          accessToken: newAccessToken,
+          refreshToken: newRefreshToken,
+        };
+        localStorage.setItem('userData', JSON.stringify(newUserData));
+        action('userData', newUserData);
+        console.clear();
+        return newUserData;
+      } else {
+        localStorage.clear();
+        action('userData', {});
+        console.clear();
+        throw new Error(res.data.message);
+      }
+    } else {
+      localStorage.clear();
+      action('userData', {});
+      console.clear();
+      throw new Error('Refresh token not found');
+    }
+  }
+
   /**
    * Check the user authentication status
    */
   const checkAuth = async () => {
     const userData = getState('userData');
-    if (userData) {
-      const { accessToken, refreshToken } = userData;
-      if (accessToken) {
-        const { res } = await getData('profile', {}, accessToken);
-        if (res.status === 401) {
-          if (refreshToken) {
-            const { res, data } = await client.post(endpoint.refreshToken, {
-              refreshToken,
-            });
-            if (res.status === 200 && data.data) {
-              const newAccessToken = data.data.token.accessToken;
-              const newRefreshToken = data.data.token.refreshToken;
-              const newUserData = {
-                ...userData,
-                accessToken: newAccessToken,
-                refreshToken: newRefreshToken,
-              };
-              localStorage.setItem('userData', JSON.stringify(newUserData));
-              action('userData', newUserData);
-              return newUserData;
-            } else {
-              localStorage.clear();
-              action('userData', {});
-              throw new Error(res.data.message);
-            }
-          } else {
-            localStorage.clear();
-            action('userData', {});
-            throw new Error(res.data.message);
-          }
-        }
+    if (userData && userData.accessToken) {
+      const { res } = await getData('profile', {}, userData.accessToken);
+      if (res.status === 401) {
+        return await getRefreshToken();
+      } else {
+        return userData;
       }
     }
     return userData;
@@ -113,12 +124,22 @@ export default function StateProvider({ children }) {
       .catch(() => reload())
       .finally(() => action('loading', false));
   }, []);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      if (state.userData) {
+        checkAuth();
+      }
+    }, 100000);
+    return () => clearInterval(id);
+  }, [state.userData]);
   return (
     <Provider
       value={{
         getState,
         action,
         checkAuth,
+        getRefresh: getRefreshToken,
         reload,
         getData: handleGetData,
       }}>

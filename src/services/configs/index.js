@@ -29,5 +29,5 @@ export const endpoint = {
 /**
  * The number of items per page.
  */
-export const PER_PAGE = 6;
+export const PER_PAGE = 5;
 export default server;
