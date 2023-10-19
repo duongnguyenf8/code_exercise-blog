@@ -45,13 +45,15 @@ export const format = (value, field) => {
  * @returns {string} The linkified text.
  */
 export const linkify = (text) => {
-  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  const urlRegex = /((https?:\/\/)|(www\.))[^\s]+/g;
   return text.replaceAll(urlRegex, function (url) {
+    if (url.slice(0, 4) !== 'http') {
+      url = 'http://' + url;
+    }
     if (url.slice(-1) === '/') {
       url = url.substring(0, url.length - 1);
     }
-    url.replace(/[.,;'"]$/, '');
-    return ` <a href="${url}" class="link" target="_blank">${url}</a> `;
+    return ` <a href="${url}" class="link" target="_blank">${url.replace('http://', '')}</a> `;
   });
 };
 
@@ -62,7 +64,7 @@ export const linkify = (text) => {
  */
 export const phoneify = (text) => {
   const phoneRegex =
-    /((\+|0)\d{1,4}[-.\s]?)?(\(?\d{1,3}?\)?[-.\s]?)?(\d{1,4}[-.\s]?){2,}\d{8,}/g;
+    /((\+|0)\d{1,4}[-.\s]?)?(\(?\d{1,3}?\)?[-.\s]?)?\b\d{1,4}[-.\s]?\d{2,}[-.\s]?\d{2,}\b/g;
   return text.replaceAll(phoneRegex, function (phone) {
     return ` <a href="tel:${phone}" class="link" target="_blank">${phone}</a> `;
   });
@@ -88,22 +90,31 @@ export const mailify = (text) => {
 export const youtubify = (text) => {
   const youtubeRegex = /(https?:\/\/(www\.)?(youtube\.com|youtu\.be)\/[^\s]+)/g;
   return text.replaceAll(youtubeRegex, function (url) {
-    const videoId = url
-      .split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/)[2]
-      .split(/[^0-9a-z_-]/i)[0];
-    return `
-      <iframe
-        width='560'
-        height='315'
-        src='https://www.youtube.com/embed/${videoId}'
-        title='YouTube video player'
-        frameBorder='0'
-        allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-        allowFullScreen></iframe>
-    `;
+    if (url) {
+      let videoId = url.split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/)[2];
+      if (videoId) {
+        videoId = videoId.split(/[^0-9a-z_-]/i)[0];
+        return `
+        <iframe
+          width='560'
+          height='315'
+          src='https://www.youtube.com/embed/${videoId}'
+          title='YouTube video player'
+          frameBorder='0'
+          allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+          allowFullScreen></iframe>
+      `;
+      }
+      return url;
+    }
+    return url;
   });
 };
-
+/**
+ * Computes the final string to be displayed by replacing email addresses with mailto: links, phone numbers with tel: links, and URLs with clickable links.
+ * @param {string} text The text to process.
+ * @returns {string} The processed text.
+ */
 export const computedStr = (text) => {
   let result = mailify(text);
   result = phoneify(result);

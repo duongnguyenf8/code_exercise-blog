@@ -251,6 +251,14 @@ Hiển thị ngày posts bài
 
 Làm các trang detail, trang blog
 
+- Khi render trang login thì đường dẫn là `/sign-in`
+
+- Khi render trang register thì đường dẫn là `/sign-up`
+
+- Khi render trang cá nhân của người khác thì là `/profile/:id` với id là id người dùng
+
+- Khi render trang cá nhân của mình thì là: `/profile/@me`
+
 Cắt regex để thành các đường dẫn:
 
 - Số điện thoại: tel:sdt
