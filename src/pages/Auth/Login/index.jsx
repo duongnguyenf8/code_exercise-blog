@@ -37,7 +37,8 @@ export default function Login({ store }) {
     e.preventDefault();
     if (!loading) {
       action('loading', true);
-      const { email, password } = data;
+      let { email, password } = data;
+      email = email.replaceAll(' ', '').trim();
       if (!email || !password) {
         return setError('Please enter all required fields');
       } else {
@@ -62,7 +63,7 @@ export default function Login({ store }) {
 
   const handleChange = (e) => {
     setError('');
-    setData({ ...data, [e.target.name]: e.target.value.trim() });
+    setData({ ...data, [e.target.name]: e.target.value });
   };
 
   const handleBlur = (e) => {

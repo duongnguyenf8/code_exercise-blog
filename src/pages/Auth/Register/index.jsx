@@ -35,9 +35,11 @@ export default function Register({ store }) {
   }, [navigate, userData]);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSearchParams({ email: data.email, name: data.name });
+    setSearchParams({ email: data.email.trim(), name: data.name.trim() });
     if (!loading) {
-      const { email, password, name } = data;
+      let { email, password, name } = data;
+      email = email.replaceAll(' ', '').trim();
+      name = name.trim();
       if (!email || !password || !name) {
         return setError('Please enter all required fields');
       } else {
@@ -55,7 +57,7 @@ export default function Register({ store }) {
 
   const handleChange = (e) => {
     setError('');
-    setData({ ...data, [e.target.name]: e.target.value.trim() });
+    setData({ ...data, [e.target.name]: e.target.value });
   };
   const handleBlur = (e) => {
     const field = e.target.name;

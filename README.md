@@ -1,8 +1,14 @@
 ## Bài tập về nhà - Blog login with Datepicker
 
-1: API Server
+API Demo:
 
 **[https://api-auth-two.vercel.app](https://api-auth-two.vercel.app)**
+
+Code Demo
+
+**[https://code-exercise-blog.vercel.app](https://code-exercise-blog.vercel.app)**
+
+1: API Server
 
 Các resources:
 
@@ -53,7 +59,7 @@ Các resources:
 
   - **/logout**(Post):logout
 
-    Headers: Authorization accessToken
+    Headers: Authorization Bearer accessToken
 
     Response:
 
@@ -87,11 +93,11 @@ Các resources:
     }
     ```
 
-**/users**
+- **/users**
 
-- **/profile**(get): get profile
+  - **/profile**(get): get profile
 
-  Headers: Authorization Bearer
+  Headers: Authorization Bearer accessToken
 
   Response:
 
@@ -125,34 +131,70 @@ Các resources:
 
 - **/blogs**
 
+  - **/**(post): POST một bài viết mới
+
+    Header: Authorization Bearer accessToken
+
+    Body:
+
+    ```json
+    {
+      "title": "title mới",
+      "content": "content mới"
+    }
+    ```
+
+    Response:
+
+    ```json
+    {
+      "code": 200,
+      "status_code": "SUCCESS",
+      "message": "Thêm bài viết thành công",
+      "data": {
+        "_id": "6530956724e78191008b3d39",
+        "title": "title mới",
+        "content": "content mới",
+        "userId": {
+          "_id": "653094a324e78191008b3d0b",
+          "name": "User mới"
+        },
+        "createdAt": "2023-10-19T02:33:11.290Z",
+        "timeUp": "2023-10-19T02:33:11.290Z"
+      }
+    }
+    ```
+
+    ***
+
   - **/**(get): Lấy 10 blog mới nhất (limit mặc định là **10**, page mặc định là **1**)
 
-  Response:
+    Response:
 
-  ```json
-  {
-    "code": 200,
-    "status_code": "SUCCESS",
-    "message": "Thành công",
-    "data": [
-      {
-        "_id": "6528016d0f2f470d3538ef46",
-        "title": "Xin Chào F8",
-        "content": "Hello F8",
-        "userId": {
-          "_id": "652801360f2f470d3538ef3f",
-          "name": "Lê Đức Nam"
-        },
-        "createdAt": "2023-10-12T14:23:41.397Z",
-        "updatedAt": "2023-10-12T14:23:41.397Z",
-        "__v": 0
-      }
-      //...
-    ]
-  }
-  ```
+    ```json
+    {
+      "code": 200,
+      "status_code": "SUCCESS",
+      "message": "Thành công",
+      "data": [
+        {
+          "_id": "6528016d0f2f470d3538ef46",
+          "title": "Xin Chào F8",
+          "content": "Hello F8",
+          "userId": {
+            "_id": "652801360f2f470d3538ef3f",
+            "name": "Lê Đức Nam"
+          },
+          "createdAt": "2023-10-12T14:23:41.397Z",
+          "updatedAt": "2023-10-12T14:23:41.397Z",
+          "__v": 0
+        }
+        //...
+      ]
+    }
+    ```
 
-  ***
+    ***
 
   - **/:blogId**(get): Lấy 1 blog
 
@@ -180,17 +222,17 @@ Các resources:
 
 2: Chức năng chính:
 
-**[https://code-exercise-blog.vercel.app/](https://code-exercise-blog.vercel.app)**
-
 Đăng nhập
 
 Đăng ký
 
 Logout
 
-Khi đăng nhập xong có thể post bài
+Chọn ngày khi post bài
 
-Chọn ngày khi post bài.
+Hiển thị ngày posts bài
+
+Khi đăng nhập xong có thể post bài
 
 Khi chưa đăng nhập không hiển thị form post bài
 
