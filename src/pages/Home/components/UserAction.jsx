@@ -15,7 +15,7 @@ import FormPost from './FormPost';
  */
 export default function UserAction({ store, setMsg, msg }) {
   const navigate = useNavigate();
-  const { action, getRefresh, reload } = store;
+  const { action, reload } = store;
   const userData = store.getState('userData');
   const loading = store.getState('loading');
   return (
@@ -42,29 +42,11 @@ export default function UserAction({ store, setMsg, msg }) {
             onClick={async () => {
               action('loading', true);
               const { res } = await logout(userData.accessToken);
+              localStorage.clear();
+              action('userData', {});
               if (!res.ok && res.status === 401) {
-                await getRefresh()
-                  .then(async (userData) => {
-                    const { res } = await logout(userData.accessToken);
-                    if (res.ok) {
-                      localStorage.clear();
-                      action('userData', {});
-                      navigate(endpoint.signIn);
-                    } else {
-                      localStorage.clear();
-                      action('userData', {});
-                      reload();
-                    }
-                  })
-                  .catch(() => {
-                    localStorage.clear();
-                    action('userData', {});
-                    reload();
-                  })
-                  .finally(() => action('loading', false));
+                reload();
               } else {
-                localStorage.clear();
-                action('userData', {});
                 navigate(endpoint.signIn);
                 action('loading', false);
               }

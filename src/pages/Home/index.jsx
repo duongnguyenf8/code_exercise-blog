@@ -41,7 +41,7 @@ export default function Home({ store }) {
       }
     }, TIMEOUT * 1000);
     return () => clearInterval(id);
-  }, [userData]);
+  }, [userData, msg]);
 
   const { title: titleStyle } = homeStyles;
   return (

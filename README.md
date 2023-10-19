@@ -74,7 +74,7 @@ Các resources:
 
     ***
 
-    - **/refresh-token**(Post): refresh
+  - **/refresh-token**(Post): refresh
 
     Body: `"refreshToken": refreshToken`
 
@@ -87,7 +87,8 @@ Các resources:
       "message": "Thành công",
       "data": {
         "token": {
-          "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MjgzYzFlZTg0OGQ1YTZjOTY3MjIzMiIsImlhdCI6MTY5NzE3Njg3MCwiZXhwIjoxNjk3MTgwNDcwfQ.mRKnrXwSKk9GJmCbx88h4ruknoo4o_w_o02BXkp-Qfk"
+          "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MjgzYzFlZTg0OGQ1YTZjOTY3MjIzMiIsImlhdCI6MTY5NzE3Njg3MCwiZXhwIjoxNjk3MTgwNDcwfQ.mRKnrXwSKk9GJmCbx88h4ruknoo4o_w_o02BXkp-Qfk",
+          "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MjgzYzFlZTg0OGQ1YTZjOTY3MjIzMiIsImlhdCI6MTY5NzE3Njg3MCwiZXhwIjoxNjk3MTgwNDcwfQ.mRKnrXwSKk9GJmCbx88h4ruknoo4o_w_o02BXkp-Qfk"
         }
       }
     }
