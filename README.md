@@ -245,3 +245,14 @@ Khi đăng nhập rồi không thể vào trang đăng nhập hoặc đăng ký.
 Chọn ngày khi post bài
 
 Hiển thị ngày posts bài
+
+**Buổi 39**
+
+Làm các trang detail, trang blog
+
+Cắt regex để thành các đường dẫn:
+
+- Số điện thoại: tel:sdt
+- Email: mailto:mail
+- Youtube: embed video youtube
+- Link: sử dụng thẻ a để làm đường dẫn, có target blank

@@ -110,6 +110,7 @@ export default function BlogPosts({ msg, setMsg, store, data = {} }) {
                     <span className='mins'>{mins + ' phút'}</span>
                   </div>
                 </div>
+
                 <Avatar
                   name={
                     location.pathname === endpoint.blogs

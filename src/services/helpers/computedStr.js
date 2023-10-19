@@ -39,7 +39,6 @@ export const format = (value, field) => {
   else if (field === 'textarea') return formatTextarea(value);
   else return formatContent(value);
 };
-
 /**
  * Linkifies the given text.
  * @param {string} text - The text to linkify.
@@ -81,4 +80,35 @@ export const mailify = (text) => {
   });
 };
 
-export const computedStr = (text) => mailify(phoneify(linkify(text)));
+/**
+ * Youtubifies the given text.
+ * @param {string} text - The text to youtubify.
+ * @returns {string} The youtubified text.
+ */
+export const youtubify = (text) => {
+  const youtubeRegex = /(https?:\/\/(www\.)?(youtube\.com|youtu\.be)\/[^\s]+)/g;
+  return text.replaceAll(youtubeRegex, function (url) {
+    const videoId = url
+      .split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/)[2]
+      .split(/[^0-9a-z_-]/i)[0];
+    return `
+      <iframe
+        width='560'
+        height='315'
+        src='https://www.youtube.com/embed/${videoId}'
+        title='YouTube video player'
+        frameBorder='0'
+        allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+        allowFullScreen></iframe>
+    `;
+  });
+};
+
+export const computedStr = (text) => {
+  let result = mailify(text);
+  result = phoneify(result);
+  result = linkify(result);
+  result = youtubify(result);
+
+  return result;
+};
