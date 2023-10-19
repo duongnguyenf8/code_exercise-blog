@@ -228,6 +228,10 @@ Các resources:
 
 Logout
 
+Duy trì đăng nhập bằng accessToken và refreshToken
+
+Authentication và Authorization bằng accessToken và refreshToken
+
 Chọn ngày khi post bài
 
 Hiển thị ngày posts bài
@@ -237,3 +241,4 @@ Khi đăng nhập xong có thể post bài
 Khi chưa đăng nhập không hiển thị form post bài
 
 Khi đăng nhập rồi không thể vào trang đăng nhập hoặc đăng ký.
+
