@@ -5,12 +5,13 @@
  */
 export function encoded(str) {
   return str
-    .replaceAll("'", " ' ")
-    .replaceAll('"', ' " ')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('&', '&amp;');
+    .replace(/'/g, " ' ")
+    .replace(/"/g, ' " ')
+    .replace(/</g, '<')
+    .replace(/>/g, '>')
+    .replace(/&/g, '&');
 }
+
 /**
  * A collection of functions for decoding HTML entities.
  * @param {string} str - The string to be decoded.
@@ -18,9 +19,9 @@ export function encoded(str) {
  */
 export function decoded(str) {
   return str
-    .replaceAll(" ' ", "'")
-    .replaceAll(' " ', '"')
-    .replaceAll('&lt;', '<')
-    .replaceAll('&gt;', '>')
-    .replaceAll('&amp;', '&');
+    .replace(/ ' /g, "'")
+    .replace(/ " /g, '"')
+    .replace(/</g, '<')
+    .replace(/>/g, '>')
+    .replace(/&/g, '&');
 }

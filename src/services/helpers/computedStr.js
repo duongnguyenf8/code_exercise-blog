@@ -12,7 +12,7 @@ const formatContent = (content) => {
     .replace(/\n{3,}/g, '\n\n')
     .replace(/\n/g, ' <br/> ')
     .trim();
-  return decoded(linkify(newContent));
+  return decoded(computedStr(newContent));
 };
 /**
  * Formats the given input.
@@ -39,6 +39,7 @@ export const format = (value, field) => {
   else if (field === 'textarea') return formatTextarea(value);
   else return formatContent(value);
 };
+
 /**
  * Linkifies the given text.
  * @param {string} text - The text to linkify.
@@ -54,3 +55,30 @@ export const linkify = (text) => {
     return ` <a href="${url}" class="link" target="_blank">${url}</a> `;
   });
 };
+
+/**
+ * Phonifies the given text.
+ * @param {string} text - The text to phoneify.
+ * @returns {string} The phonifeied text.
+ */
+export const phoneify = (text) => {
+  const phoneRegex =
+    /((\+|0)\d{1,4}[-.\s]?)?(\(?\d{1,3}?\)?[-.\s]?)?(\d{1,4}[-.\s]?){2,}\d{8,}/g;
+  return text.replaceAll(phoneRegex, function (phone) {
+    return ` <a href="tel:${phone}" class="link" target="_blank">${phone}</a> `;
+  });
+};
+
+/**
+ * Mailifies the given text.
+ * @param {string} text - The text to mailify.
+ * @returns {string} The mailified text.
+ */
+export const mailify = (text) => {
+  const emailRegex = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g;
+  return text.replaceAll(emailRegex, function (email) {
+    return ` <a href="mailto:${email}" class="link" target="_blank">${email}</a> `;
+  });
+};
+
+export const computedStr = (text) => mailify(phoneify(linkify(text)));

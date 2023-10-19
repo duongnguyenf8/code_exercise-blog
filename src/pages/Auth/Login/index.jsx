@@ -9,6 +9,7 @@ import Notify from '@/components/Notify';
 import Section from '@/components/Section';
 import Links from '@/services/helpers/Links';
 import login from '@/services/helpers/login';
+import { validate } from '@/services/helpers/validate';
 /**
  * A login component that handles user authentication.
  * @param {object} props - The props of the component.
@@ -40,8 +41,16 @@ export default function Login({ store }) {
       let { email, password } = data;
       email = email.replaceAll(' ', '').trim();
       if (!email || !password) {
-        return setError('Please enter all required fields');
+        return setError('Hãy nhập đủ tất cả các trường!');
       } else {
+        const msgEmail = validate('email', email);
+        if (msgEmail) {
+          return setError(msgEmail);
+        }
+        const msgPassword = validate('password', password);
+        if (msgPassword) {
+          return setError(msgPassword);
+        }
         const { data, message } = await login({ email, password });
         action('loading', false);
         if (!data) {
@@ -63,13 +72,14 @@ export default function Login({ store }) {
 
   const handleChange = (e) => {
     setError('');
+    action('loading', false);
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
   const handleBlur = (e) => {
     const field = e.target.name;
     if (data[field]?.length > 0) setError('');
-    else setError('Please enter the ' + field);
+    else setError('Hãy nhập ' + field + ' của bạn!');
   };
 
   useEffect(() => {

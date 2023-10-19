@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import propTypes from 'prop-types';
 import { Provider } from './Provider';
 import getData from '../helpers/getData';
@@ -22,7 +22,7 @@ export default function StateProvider({ children }) {
    * Get the new refresh token
    */
   async function getRefreshToken() {
-    const userData = getState('userData');
+    const userData = JSON.parse(localStorage.getItem('userData'));
     if (userData && userData.refreshToken) {
       const { res, data } = await client.post(endpoint.refreshToken, {
         refreshToken: userData.refreshToken,
@@ -43,7 +43,7 @@ export default function StateProvider({ children }) {
         localStorage.clear();
         action('userData', {});
         console.clear();
-        throw new Error(res.data.message);
+        throw new Error('Refresh token is not valid');
       }
     } else {
       localStorage.clear();
@@ -125,14 +125,6 @@ export default function StateProvider({ children }) {
       .finally(() => action('loading', false));
   }, []);
 
-  useEffect(() => {
-    const id = setInterval(() => {
-      if (state.userData) {
-        checkAuth();
-      }
-    }, 100000);
-    return () => clearInterval(id);
-  }, [state.userData]);
   return (
     <Provider
       value={{

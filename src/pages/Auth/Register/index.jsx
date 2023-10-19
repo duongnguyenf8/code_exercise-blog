@@ -9,6 +9,7 @@ import Notify from '@/components/Notify';
 import Section from '@/components/Section';
 import Links from '@/services/helpers/Links';
 import register from '@/services/helpers/register';
+import { validate } from '@/services/helpers/validate';
 /**
  * A register component that handles user authentication.
  * @param {object} props - The props of the component.
@@ -41,8 +42,16 @@ export default function Register({ store }) {
       email = email.replaceAll(' ', '').trim();
       name = name.trim();
       if (!email || !password || !name) {
-        return setError('Please enter all required fields');
+        return setError('Hãy nhập đầy đủ các trường!');
       } else {
+        const msgEmail = validate('email', email);
+        if (msgEmail) {
+          return setError(msgEmail);
+        }
+        const msgPassword = validate('password', password);
+        if (msgPassword) {
+          return setError(msgPassword);
+        }
         action('loading', true);
         const { message, code } = await register({ email, password, name });
         action('loading', false);
@@ -57,12 +66,13 @@ export default function Register({ store }) {
 
   const handleChange = (e) => {
     setError('');
+    action('loading', false);
     setData({ ...data, [e.target.name]: e.target.value });
   };
   const handleBlur = (e) => {
     const field = e.target.name;
     if (data[field]?.length > 0) setError('');
-    else setError('Please enter the ' + field);
+    else setError('Hãy nhập ' + field + ' của bạn!');
   };
 
   useEffect(() => {

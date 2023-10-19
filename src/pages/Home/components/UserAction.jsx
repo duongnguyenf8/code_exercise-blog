@@ -68,17 +68,6 @@ export default function UserAction({ store, setMsg, msg }) {
                 navigate(endpoint.signIn);
                 action('loading', false);
               }
-              // .then(({ message }) => {
-              //   if (msg.message) {
-              //     setMsg({ ...msg, message: '' });
-              //   }
-              //   if (message) {
-              //     action('userData', {});
-              //   }
-              // })
-              //   .catch(await () => {
-
-              // });
             }}
             disabled={loading}>
             Sign out

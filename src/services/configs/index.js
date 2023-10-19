@@ -30,4 +30,5 @@ export const endpoint = {
  * The number of items per page.
  */
 export const PER_PAGE = 5;
+export const TIMEOUT = 10;
 export default server;

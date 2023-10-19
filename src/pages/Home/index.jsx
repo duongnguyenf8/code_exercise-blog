@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import UserAction from './components/UserAction';
 import BlogPosts from '@/components/BlogPosts';
 import Notify from '@/components/Notify';
+import { TIMEOUT } from '@/services/configs';
 /**
  * A register component that handles user authentication.
  * @param {object} props - The props of the component.
@@ -11,11 +12,12 @@ import Notify from '@/components/Notify';
  * @param {function} props.store.getData - The request to get the new global state value.
  */
 export default function Home({ store }) {
-  const { reload } = store;
+  const { reload, checkAuth, getState } = store;
   const [msg, setMsg] = useState({
     type: 'success',
     message: '',
   });
+  const userData = getState('userData');
 
   useEffect(() => {
     const preReload = async (e) => {
@@ -30,6 +32,16 @@ export default function Home({ store }) {
     window.addEventListener('keydown', preReload);
     return () => window.removeEventListener('keydown', preReload);
   }, [msg, reload]);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      if (userData) {
+        setMsg({ ...msg, message: '' });
+        checkAuth();
+      }
+    }, TIMEOUT * 1000);
+    return () => clearInterval(id);
+  }, [userData]);
 
   const { title: titleStyle } = homeStyles;
   return (
