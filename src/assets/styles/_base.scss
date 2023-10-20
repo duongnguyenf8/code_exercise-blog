@@ -112,3 +112,15 @@ img {
   border: 1px solid var(--content-color, $white);
   color: var(--content-color, $white);
 }
+
+span.highlight {
+  @keyframes highlight {
+    25% {
+      color: var(--main-color, $green);
+    }
+    75% {
+      color: var(--second-color, $red);
+    }
+  }
+  animation: alternate 1s linear infinite highlight;
+}

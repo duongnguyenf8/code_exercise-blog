@@ -112,6 +112,17 @@ export const youtubify = (text) => {
     return url;
   });
 };
+
+/**
+ * Anifies the given text.
+ * @param {string}
+ * @returns {string} The anified text.
+ */
+const anify = (text) => {
+  const regex = /\b(an|An|AN)\b/g;
+  return text.replace(regex, `<span class="highlight">$1</span>`);
+};
+
 /**
  * Computes the final string to be displayed by replacing email addresses with mailto: links, phone numbers with tel: links, and URLs with clickable links.
  * @param {string} text The text to process.
@@ -122,6 +133,7 @@ export const computedStr = (text) => {
   result = phoneify(result);
   result = linkify(result);
   result = youtubify(result);
+  result = anify(result);
 
   return result;
 };
