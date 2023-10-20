@@ -45,7 +45,7 @@ export const format = (value, field) => {
  * @returns {string} The linkified text.
  */
 export const linkify = (text) => {
-  const urlRegex = /((https?:\/\/)|(www\.))[^\s]+/g;
+  const urlRegex = /((https?:\/\/)|(localhost?:)|(www\.))[^\s]+/g;
   return text.replaceAll(urlRegex, function (url) {
     if (url.slice(0, 4) !== 'http') {
       url = 'http://' + url;
@@ -63,13 +63,15 @@ export const linkify = (text) => {
  * @returns {string} The phonifeied text.
  */
 export const phoneify = (text) => {
-  const phoneRegex =
-    /((\+|0)\d{1,4}[-.\s]?)?(\(?\d{1,3}?\)?[-.\s]?)?\b\d{1,4}[-.\s]?\d{2,}[-.\s]?\d{2,}\b/g;
+  const phoneRegex = /((\+?)|(0)?)?\b\d{9,11}\b/g;
+
   return text.replaceAll(phoneRegex, function (phone) {
+    if (phone.slice(0, 1) !== '+' && phone.slice(0, 1) !== '0') {
+      phone = `+${phone}`;
+    }
     return ` <a href="tel:${phone}" class="link" target="_blank">${phone}</a> `;
   });
 };
-
 /**
  * Mailifies the given text.
  * @param {string} text - The text to mailify.
