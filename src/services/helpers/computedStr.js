@@ -1,12 +1,24 @@
+import { decoded, encoded } from './encoded';
+
+/**
+ * A function to remove accents from a string.
+ * @param {string} str - The string to be processed.
+ * @returns {string} The processed string.
+ */
+export function removeAccents(str) {
+  return str
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/đ/g, 'd')
+    .replace(/Đ/g, 'D');
+}
+
 /**
  * Formats the given content, input or textarea.
  * @param {string} content - The content to format.
  * @param {('input'|'textarea'|'content')} field - The field to format.
  * @returns {string} The formatted content.
  */
-
-import { decoded, encoded } from './encoded';
-
 const formatContent = (content) => {
   const newContent = encoded(content)
     .replace(/\n{3,}/g, '\n\n')
@@ -114,12 +126,19 @@ export const youtubify = (text) => {
 };
 
 /**
- * Anifies the given text.
+ * Nameifys the given text.
  * @param {string}
- * @returns {string} The anified text.
+ * @returns {string} The Nameifyd text.
  */
-const anify = (text) => {
-  const regex = /\b(an|An|AN)\b/g;
+const nameify = (text) => {
+  const words = ['an', 'dương', 'quân'];
+  words.forEach((word) => words.push(removeAccents(word)));
+  const variants = words.flatMap((word) => [
+    word,
+    word.charAt(0).toUpperCase() + word.slice(1),
+    word.toUpperCase(),
+  ]);
+  const regex = new RegExp(`\\b(${variants.join('|')})\\b`, 'gi');
   return text.replace(regex, `<span class="highlight">$1</span>`);
 };
 
@@ -133,7 +152,7 @@ export const computedStr = (text) => {
   result = phoneify(result);
   result = linkify(result);
   result = youtubify(result);
-  result = anify(result);
+  result = nameify(result);
 
   return result;
 };

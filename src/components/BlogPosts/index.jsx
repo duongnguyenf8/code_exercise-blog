@@ -5,7 +5,7 @@ import Section from '@/components/Section';
 import Tag from '@/components/Tag';
 import { PER_PAGE, endpoint } from '@/services/configs';
 import { format } from '@/services/helpers/computedStr';
-import removeAccents from '@/services/helpers/removeAccents';
+import { removeAccents } from '@/services/helpers/computedStr';
 import blogStyles from './blogStyles.module.scss';
 import getDate from '@/services/helpers/getDate';
 import { useLocation } from 'react-router-dom';
