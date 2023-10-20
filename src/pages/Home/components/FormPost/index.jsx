@@ -34,7 +34,6 @@ export default function FormPost({ store, setMsg, msg }) {
   const loading = getState('loading');
   const userData = getState('userData');
   function resetForm() {
-    console.log('1', 1);
     setBlog({
       title: '',
       content: '',

@@ -8,8 +8,8 @@ import Section from '@/components/Section';
 import Button from '@/components/Button';
 import BlogPosts from '@/components/BlogPosts';
 import Tag from '@/components/Tag';
-const pathMe = path.profile + path.me;
 const { SERVER_API, endpoint } = server;
+const pathMe = path.profile + path.me;
 const client = new HttpClient(SERVER_API);
 /**
  * A profile component that displays a user's profile.
@@ -30,9 +30,13 @@ export default function Profile({ store }) {
       id + '' !== 'undefined' || // ID not /undefined
       location.pathname === pathMe // See user profile
     ) {
-      if (loginUserData._id === id) {
-        navigate(pathMe);
+      if (loginUserData._id === undefined && location.pathname === pathMe) {
+        return navigate(path.signIn);
       }
+      if (loginUserData._id === id) {
+        return navigate(pathMe);
+      }
+
       let profileID = id;
       if (location.pathname === pathMe) {
         profileID = loginUserData._id;
@@ -42,9 +46,9 @@ export default function Profile({ store }) {
       if (data.data) {
         setUserData((prev) => ({ ...prev, ...data.data }));
       } else {
-        navigate(path.blogs);
+        return navigate(path.blogs);
       }
-    } else navigate(path.blogs);
+    } else return navigate(path.blogs);
   };
   useEffect(() => {
     getUserData();
@@ -55,12 +59,7 @@ export default function Profile({ store }) {
         {location.pathname === pathMe ? 'Personal p' : 'P'}rofile:{' '}
         <Tag text={userData.name} />
       </h1>
-      <Button
-        onClick={() => {
-          navigate(path.blogs);
-        }}>
-        Go home
-      </Button>
+      <Button onClick={() => navigate(path.blogs)}>Go home</Button>
       <BlogPosts data={userData} />
     </Section>
   );

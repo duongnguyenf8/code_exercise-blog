@@ -4,12 +4,7 @@
  * @returns {string} The encoded string.
  */
 export function encoded(str) {
-  return str
-    .replace(/'/g, " ' ")
-    .replace(/"/g, ' " ')
-    .replace(/</g, '<')
-    .replace(/>/g, '>')
-    .replace(/&/g, '&');
+  return str.replace(/'/g, " ' ").replace(/"/g, ' " ');
 }
 
 /**
@@ -18,10 +13,5 @@ export function encoded(str) {
  * @returns {string} The decoded string.
  */
 export function decoded(str) {
-  return str
-    .replace(/ ' /g, "'")
-    .replace(/ " /g, '"')
-    .replace(/</g, '<')
-    .replace(/>/g, '>')
-    .replace(/&/g, '&');
+  return str.replace(/ ' /g, "'").replace(/ " /g, '"');
 }
