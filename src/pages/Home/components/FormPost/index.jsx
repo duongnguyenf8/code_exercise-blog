@@ -34,6 +34,7 @@ export default function FormPost({ store, setMsg, msg }) {
   const loading = getState('loading');
   const userData = getState('userData');
   function resetForm() {
+    console.log('1', 1);
     setBlog({
       title: '',
       content: '',
@@ -60,25 +61,15 @@ export default function FormPost({ store, setMsg, msg }) {
       };
       if (picker.useDate) {
         let { moment, day, date, hours, mins } = getDate(picker.date);
-        if (hours === 0) {
-          hours = new Date().getHours();
-        }
-        if (mins === 0) {
-          mins = new Date().getMinutes();
-        }
         setDate({
           ...picker,
-          label: `Bài viết của bạn sẽ được đăng vào: ${moment
-            .fromNow()
-            .replace(
-              'vài giây trước',
-              'vài giây sau'
-            )}, ${date}, ngày ${day}, lúc ${hours} giờ, ${mins} phút`,
+          label: `Bài viết của bạn sẽ được đăng vào: ${moment.fromNow()}, ${date}, ngày ${day}, lúc ${hours} giờ, ${mins} phút`,
         });
         const datePost = moment.format('YYYY-MM-DD');
         const timePost = datePost + ' ' + hours + ':' + mins;
         // body.timeUp = timePost;
         //console.log(timePost);
+        setTimeout(() => resetForm(), 5000);
         return timePost;
       }
       action('loading', true);
