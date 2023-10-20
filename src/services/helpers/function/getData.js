@@ -1,4 +1,4 @@
-import server from '../configs';
+import server from '../../configs';
 import HttpClient from './httpClient';
 const { SERVER_API, endpoint: path } = server;
 /**

@@ -1,5 +1,5 @@
 import server from '@/services/configs';
-import HttpClient from './httpClient';
+import HttpClient from '../function/httpClient';
 const { SERVER_API, endpoint } = server;
 /**
  * A function to login a user.

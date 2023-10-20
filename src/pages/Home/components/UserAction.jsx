@@ -3,7 +3,7 @@ import propTypes from 'prop-types';
 import Avatar from '@/components/Avatar';
 import Button from '@/components/Button';
 import Section from '@/components/Section';
-import logout from '@/services/helpers/logout';
+import logout from '@/services/helpers/auth/logout';
 import { endpoint } from '@/services/configs';
 import FormPost from './FormPost';
 /**

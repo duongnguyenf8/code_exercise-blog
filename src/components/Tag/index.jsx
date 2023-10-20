@@ -1,5 +1,5 @@
 import propTypes from 'prop-types';
-import Links from '@/services/helpers/Links';
+import Links from '@/components/Links';
 import tagStyles from './tagStyles.module.scss';
 
 /**

@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import blogStyles from './blogStyles.module.scss';
-import HttpClient from '@/services/helpers/httpClient';
+import HttpClient from '@/services/helpers/function/httpClient';
 import server from '@/services/configs';
 import Section from '@/components/Section';
 import Button from '@/components/Button';
 import { endpoint as path } from '@/services/configs';
-import { format } from '@/services/helpers/computedStr';
-import getDate from '@/services/helpers/getDate';
+import { format } from '@/services/helpers/string/computedStr';
+import getDate from '@/services/helpers/string/getDate';
 import Tag from '@/components/Tag';
 
 const { SERVER_API, endpoint } = server;

@@ -4,10 +4,10 @@ import Avatar from '@/components/Avatar';
 import Section from '@/components/Section';
 import Tag from '@/components/Tag';
 import { PER_PAGE, endpoint } from '@/services/configs';
-import { format } from '@/services/helpers/computedStr';
-import { removeAccents } from '@/services/helpers/computedStr';
+import { format } from '@/services/helpers/string/computedStr';
+import { removeAccents } from '@/services/helpers/string/computedStr';
 import blogStyles from './blogStyles.module.scss';
-import getDate from '@/services/helpers/getDate';
+import getDate from '@/services/helpers/string/getDate';
 import { useLocation } from 'react-router-dom';
 
 /**

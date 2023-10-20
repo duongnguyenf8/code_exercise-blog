@@ -1,9 +1,9 @@
 import { useLayoutEffect, useState } from 'react';
 import propTypes from 'prop-types';
 import { Provider } from './Provider';
-import getData from '../helpers/getData';
+import getData from '../helpers/function/getData';
 import server, { PER_PAGE } from '../configs';
-import HttpClient from '../helpers/httpClient';
+import HttpClient from '../helpers/function/httpClient';
 import initialState from './initialState';
 const { SERVER_API, endpoint } = server;
 const client = new HttpClient(SERVER_API);

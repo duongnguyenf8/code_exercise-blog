@@ -2,7 +2,7 @@ import propTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import server from '@/services/configs';
-import HttpClient from '@/services/helpers/httpClient';
+import HttpClient from '@/services/helpers/function/httpClient';
 import { endpoint as path } from '@/services/configs';
 import Section from '@/components/Section';
 import Button from '@/components/Button';

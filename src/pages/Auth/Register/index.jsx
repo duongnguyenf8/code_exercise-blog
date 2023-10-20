@@ -7,9 +7,9 @@ import Button from '@/components/Button';
 import Input from '@/components/Input/Input';
 import Notify from '@/components/Notify';
 import Section from '@/components/Section';
-import Links from '@/services/helpers/Links';
-import register from '@/services/helpers/register';
-import { validate } from '@/services/helpers/validate';
+import Links from '@/components/Links';
+import register from '@/services/helpers/auth/register';
+import { validate } from '@/services/helpers/auth/validate';
 /**
  * A register component that handles user authentication.
  * @param {object} props - The props of the component.

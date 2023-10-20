@@ -1,6 +1,6 @@
 import propTypes from 'prop-types';
 import { useLocation, Link, NavLink } from 'react-router-dom';
-import { endpoint } from '../configs';
+import { endpoint } from '../../services/configs';
 
 /**
  * A custom link component that supports highlighting the current page and

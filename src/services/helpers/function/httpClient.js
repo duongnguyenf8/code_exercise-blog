@@ -1,4 +1,4 @@
-import server from '../configs';
+import server from '../../configs';
 
 const { SERVER_API } = server;
 

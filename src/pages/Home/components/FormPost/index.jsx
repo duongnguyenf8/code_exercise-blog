@@ -4,9 +4,9 @@ import Input from '@/components/Input/Input';
 import propTypes from 'prop-types';
 import { useState } from 'react';
 import Textarea from '@/components/Textarea';
-import { format } from '@/services/helpers/computedStr';
+import { format } from '@/services/helpers/string/computedStr';
 import { Datepicker } from '@mobiscroll/react';
-import getDate from '@/services/helpers/getDate';
+import getDate from '@/services/helpers/string/getDate';
 import '@mobiscroll/react/dist/css/mobiscroll.scss';
 import './formPost.scss';
 /**

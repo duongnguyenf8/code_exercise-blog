@@ -1,4 +1,4 @@
-import HttpClient from '@/services/helpers/httpClient';
+import HttpClient from '@/services/helpers/function/httpClient';
 import server from '@/services/configs';
 const { SERVER_API, endpoint } = server;
 export default async function postBlog(
