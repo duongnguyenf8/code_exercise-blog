@@ -23,7 +23,7 @@ export default function Redirect({ path }) {
         onClick={() => {
           navigate(endpoint.blogs);
         }}
-        title='Go Home!'
+        title='Về trang chủ!'
       />
     </div>
   );

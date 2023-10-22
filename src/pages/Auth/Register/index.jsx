@@ -10,6 +10,7 @@ import Section from '@/components/Section';
 import Links from '@/components/Links';
 import register from '@/services/helpers/auth/register';
 import { validate } from '@/services/helpers/auth/validate';
+import { Helmet } from 'react-helmet';
 /**
  * A register component that handles user authentication.
  * @param {object} props - The props of the component.
@@ -80,51 +81,66 @@ export default function Register({ store }) {
   }, [data.email, data.password, data.name]);
   const { form: formStyles, auth: authStyle } = authStyles;
   return (
-    <Section className={authStyle}>
-      <div className='info-group column'>
-        <h1>Sign Up</h1>
-        <span>Please enter your name, email and password.</span>
-        <Links className='link'>Go to home</Links>
-      </div>
-      <form noValidate onSubmit={handleSubmit} className={formStyles}>
-        <Input
-          name='name'
-          value={data.name}
-          placeholder='name'
-          onBlur={handleBlur}
-          onChange={handleChange}
-        />
-        <Input
-          name='email'
-          type='email'
-          value={data.email}
-          placeholder='email'
-          onBlur={handleBlur}
-          onChange={handleChange}
-        />
-        <Input
-          name='password'
-          type='password'
-          placeholder='password'
-          value={data.password}
-          onBlur={handleBlur}
-          onChange={handleChange}
-        />
-        <div className='button-group'>
-          <Button
-            type='submit'
-            title='Sign up'
-            disabled={loading || error !== ''}
-          />
-          <Button
-            type='submit'
-            title='Sign in'
-            onClick={() => navigate(endpoint.signIn)}
-          />
+    <>
+      <Helmet>
+        <title>{`Đăng ký sử dụng Blogger`}</title>
+        <meta name='description' content={`Trang đăng ký`} />
+      </Helmet>
+      <Section className={authStyle}>
+        <div className='info-group column'>
+          <h1>Đăng ký</h1>
+          <span style={{ display: 'block', maxWidth: 700 + 'px' }}>
+            Bạn muốn tham gia cộng đồng Blogger, nơi bạn có thể tạo và chia sẻ
+            những bài viết độc đáo của mình? Hãy điền thông tin của bạn vào biểu
+            mẫu dưới đây để tạo tài khoản miễn phí. Bạn sẽ nhận được nhiều ưu
+            đãi, thông tin mới nhất và cơ hội giao lưu với những blogger khác
+            khi đăng ký. Đừng bỏ lỡ cơ hội này, hãy đăng ký ngay! Nếu bạn đã có
+            tài khoản, <Links to={endpoint.signIn}>Đăng nhập ngay!</Links>
+          </span>
+          <Links className='link'>Về trang chủ</Links>
         </div>
-      </form>
-      {error && <Notify message={error} type='failed' position='bottom-left' />}
-    </Section>
+        <form noValidate onSubmit={handleSubmit} className={formStyles}>
+          <Input
+            name='name'
+            value={data.name}
+            placeholder='name'
+            onBlur={handleBlur}
+            onChange={handleChange}
+          />
+          <Input
+            name='email'
+            type='email'
+            value={data.email}
+            placeholder='email'
+            onBlur={handleBlur}
+            onChange={handleChange}
+          />
+          <Input
+            name='password'
+            type='password'
+            placeholder='password'
+            value={data.password}
+            onBlur={handleBlur}
+            onChange={handleChange}
+          />
+          <div className='button-group'>
+            <Button
+              type='submit'
+              title='Sign up'
+              disabled={loading || error !== ''}
+            />
+            <Button
+              type='submit'
+              title='Sign in'
+              onClick={() => navigate(endpoint.signIn)}
+            />
+          </div>
+        </form>
+        {error && (
+          <Notify message={error} type='failed' position='bottom-left' />
+        )}
+      </Section>
+    </>
   );
 }
 

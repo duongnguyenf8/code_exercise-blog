@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import authStyles from '../authStyles.module.scss';
 import propTypes from 'prop-types';
+import { Helmet } from 'react-helmet';
 import { endpoint } from '@/services/configs';
 import Button from '@/components/Button';
 import Input from '@/components/Input/Input';
@@ -10,6 +10,7 @@ import Section from '@/components/Section';
 import Links from '@/components/Links';
 import login from '@/services/helpers/auth/login';
 import { validate } from '@/services/helpers/auth/validate';
+import authStyles from '../authStyles.module.scss';
 /**
  * A login component that handles user authentication.
  * @param {object} props - The props of the component.
@@ -88,50 +89,62 @@ export default function Login({ store }) {
 
   const { form: formStyles, auth: authStyle } = authStyles;
   return (
-    <Section className={authStyle}>
-      <div className='info-group column'>
-        <h1>Sign In</h1>
-        <span>Please enter your email and password.</span>
-        <Links className='link'>Go to home</Links>
-      </div>
-      <form noValidate onSubmit={handleSubmit} className={formStyles}>
-        <Input
-          name='email'
-          type='email'
-          value={data.email}
-          placeholder='email'
-          onBlur={handleBlur}
-          onChange={handleChange}
-        />
-        <Input
-          name='password'
-          type='password'
-          placeholder='password'
-          value={data.password}
-          onBlur={handleBlur}
-          onChange={handleChange}
-        />
-        <div className='button-group'>
-          <Button
-            type='submit'
-            title='Sign in'
-            disabled={loading || error !== ''}
-          />
-          <Button
-            type='button'
-            title='Sign up'
-            onClick={() => navigate(endpoint.signUp)}
-          />
+    <>
+      <Helmet>
+        <title>{`Đăng nhập vào Blogger`}</title>
+        <meta name='description' content={`Trang đăng nhập`} />
+      </Helmet>
+      <Section className={authStyle}>
+        <div className='info-group column'>
+          <h1>Đăng nhập</h1>
+          <span style={{ display: 'block', maxWidth: 700 + 'px' }}>
+            Hãy nhập email và mật khẩu của bạn để truy cập vào nền tảng Blogger,
+            nơi bạn có thể tạo và chia sẻ những bài viết độc đáo của mình. Nếu
+            bạn chưa có tài khoản, hãy{' '}
+            <Links to={endpoint.signUp}>đăng ký ngay</Links> để tham gia cộng
+            đồng Blogger
+          </span>
+          <Links className='link'>Về trang chủ</Links>
         </div>
-      </form>
-      {error && (
-        <Notify
-          message={error || 'Some thing was error'}
-          type='failed'
-          position='bottom-left'
-        />
-      )}
-    </Section>
+        <form noValidate onSubmit={handleSubmit} className={formStyles}>
+          <Input
+            name='email'
+            type='email'
+            value={data.email}
+            placeholder='email'
+            onBlur={handleBlur}
+            onChange={handleChange}
+          />
+          <Input
+            name='password'
+            type='password'
+            placeholder='password'
+            value={data.password}
+            onBlur={handleBlur}
+            onChange={handleChange}
+          />
+          <div className='button-group'>
+            <Button
+              type='submit'
+              title='Sign in'
+              disabled={loading || error !== ''}
+            />
+            <Button
+              type='button'
+              title='Sign up'
+              onClick={() => navigate(endpoint.signUp)}
+            />
+          </div>
+        </form>
+        {error && (
+          <Notify
+            message={error || 'Some thing was error'}
+            type='failed'
+            position='bottom-left'
+          />
+        )}
+      </Section>
+    </>
   );
 }
 

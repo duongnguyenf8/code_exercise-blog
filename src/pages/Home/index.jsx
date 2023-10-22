@@ -5,6 +5,7 @@ import UserAction from './components/UserAction';
 import BlogPosts from '@/components/BlogPosts';
 import Notify from '@/components/Notify';
 import { TIMEOUT } from '@/services/configs';
+import { Helmet } from 'react-helmet';
 /**
  * A register component that handles user authentication.
  * @param {object} props - The props of the component.
@@ -45,12 +46,23 @@ export default function Home({ store }) {
 
   const { title: titleStyle } = homeStyles;
   return (
-    <div className='home-page'>
-      <h1 className={titleStyle}>Blogger</h1>
-      <UserAction msg={msg} setMsg={setMsg} store={store} />
-      <BlogPosts store={store} setMsg={setMsg} msg={msg} />
-      {msg.message && <Notify message={msg.message} type={msg.type} />}
-    </div>
+    <>
+      <Helmet>
+        <title>Blogger</title>
+        <meta name='og:title' content={`Trang chủ Blogger`} />
+        <meta
+          name='og:description'
+          content={`Blogger là nền tảng mạng xã hội dành cho những người yêu thích viết lách. Bạn có thể tạo và chia sẻ những bài viết của riêng mình với thế giới, theo dõi những blogger khác, bình luận và khám phá những chủ đề thú vị.`}
+        />
+        <meta property='og:url' content={`${window.location.href}`} />
+      </Helmet>
+      <div className='home-page'>
+        <h1 className={titleStyle}>Blogger</h1>
+        <UserAction msg={msg} setMsg={setMsg} store={store} />
+        <BlogPosts store={store} setMsg={setMsg} msg={msg} />
+        {msg.message && <Notify message={msg.message} type={msg.type} />}
+      </div>
+    </>
   );
 }
 

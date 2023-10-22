@@ -12,9 +12,11 @@
     },
     "dependencies": {
         "@mobiscroll/react": "npm:@mobiscroll/react-trial@^5.27.1",
+        "linkify-html": "^4.1.1",
         "moment": "^2.29.4",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
+        "react-helmet": "^6.1.0",
         "react-router-dom": "^6.16.0",
         "sass": "^1.68.0",
         "vite": "^4.4.11"

@@ -9,6 +9,7 @@ import { endpoint as path } from '@/services/configs';
 import { format } from '@/services/helpers/string/computedStr';
 import getDate from '@/services/helpers/string/getDate';
 import Tag from '@/components/Tag';
+import { Helmet } from 'react-helmet';
 
 const { SERVER_API, endpoint } = server;
 const client = new HttpClient(SERVER_API);
@@ -49,42 +50,52 @@ export default function Blog() {
   } = blogStyles;
 
   return (
-    <Section className={sectionStyle}>
-      <h2 className={titleStyle}>View blog:</h2>
-      <h1 className={titleStyle}>{blogData.title}</h1>
-      <p
-        className={contentStyle}
-        dangerouslySetInnerHTML={{
-          __html: format(blogData.content),
-        }}
-      />
+    <>
+      <Helmet>
+        <title>Blog: {blogData.title}</title>
+        <meta
+          name='og:title'
+          content={`Xem chi tiết blog: ${blogData.title.slice(0, 60)}`}
+        />
+        <meta name='og:description' content={blogData.content.slice(0, 150)} />
+        <meta property='og:url' content={`${window.location.href}`} />
+      </Helmet>
+      <Section className={sectionStyle}>
+        <h1 className={titleStyle}>View blog: {blogData.title}</h1>
+        <p
+          className={contentStyle}
+          dangerouslySetInnerHTML={{
+            __html: format(blogData.content),
+          }}
+        />
 
-      <Tag
-        text={blogData.userId.name}
-        to={path.profile + '/' + blogData.userId._id}
-      />
-      <div className={dateStyle + ' date-group column'}>
-        <div>{getDate(blogData.createdAt).moment.fromNow()}</div>
-        <div className='time-group'>
-          {Object.keys(getDate(blogData.createdAt)).map((key, index) => {
-            const value = getDate(blogData.createdAt)[key];
-            if (typeof value !== 'object') {
-              return (
-                <span key={key + index} className='date-group-item'>
-                  {key}: {getDate(blogData.createdAt)[key]}
-                </span>
-              );
-            }
-          })}
+        <Tag
+          text={blogData.userId.name}
+          to={path.profile + '/' + blogData.userId._id}
+        />
+        <div className={dateStyle + ' date-group column'}>
+          <div>{getDate(blogData.createdAt).moment.fromNow()}</div>
+          <div className='time-group'>
+            {Object.keys(getDate(blogData.createdAt)).map((key, index) => {
+              const value = getDate(blogData.createdAt)[key];
+              if (typeof value !== 'object') {
+                return (
+                  <span key={key + index} className='date-group-item'>
+                    {key}: {getDate(blogData.createdAt)[key]}
+                  </span>
+                );
+              }
+            })}
+          </div>
         </div>
-      </div>
 
-      <Button
-        onClick={() => {
-          navigate(path.blogs);
-        }}>
-        Go home
-      </Button>
-    </Section>
+        <Button
+          onClick={() => {
+            navigate(path.blogs);
+          }}>
+          Về trang chủ
+        </Button>
+      </Section>
+    </>
   );
 }

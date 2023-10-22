@@ -1,4 +1,5 @@
 import { decoded, encoded } from './encoded';
+import linkify from 'linkify-html';
 
 /**
  * A function to remove accents from a string.
@@ -26,6 +27,7 @@ const formatContent = (content) => {
     .trim();
   return decoded(computedStr(newContent));
 };
+
 /**
  * Formats the given input.
  * @param {string} input - The input to format.
@@ -50,23 +52,6 @@ export const format = (value, field) => {
   if (field === 'input') return formatInput(value);
   else if (field === 'textarea') return formatTextarea(value);
   else return formatContent(value);
-};
-/**
- * Linkifies the given text.
- * @param {string} text - The text to linkify.
- * @returns {string} The linkified text.
- */
-export const linkify = (text) => {
-  const urlRegex = /((https?:\/\/)|(localhost?:)|(www\.))[^\s]+/g;
-  return text.replaceAll(urlRegex, function (url) {
-    if (url.slice(0, 4) !== 'http') {
-      url = 'http://' + url;
-    }
-    if (url.slice(-1) === '/') {
-      url = url.substring(0, url.length - 1);
-    }
-    return ` <a href="${url}" class="link" target="_blank">${url.replace('http://', '')}</a> `;
-  });
 };
 
 /**
@@ -103,25 +88,37 @@ export const mailify = (text) => {
  */
 export const youtubify = (text) => {
   const youtubeRegex = /(https?:\/\/(www\.)?(youtube\.com|youtu\.be)\/[^\s]+)/g;
+  const stripTagARegex =
+    /<a\b[^>]*>((https|http)?:\/\/(www\.)?(youtube\.com|youtu\.be)\/[^\s]+)<\/a>/gi;
+  if (stripTagARegex.test(text) && youtubeRegex.test(text)) {
+    text = text.replace(stripTagARegex, '$1');
+  }
   return text.replaceAll(youtubeRegex, function (url) {
     if (url) {
       let videoId = url.split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/)[2];
       if (videoId) {
         videoId = videoId.split(/[^0-9a-z_-]/i)[0];
-        return `
-        <iframe
-          width='560'
-          height='315'
-          src='https://www.youtube.com/embed/${videoId}'
-          title='YouTube video player'
-          frameBorder='0'
-          allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-          allowFullScreen></iframe>
-      `;
+        if (videoId.length === 11) {
+          return `
+            <iframe
+              width='560'
+              height='315'
+              src='https://www.youtube.com/embed/${videoId}/'
+              title='YouTube video player'
+              frameBorder='0'
+              allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+              allowFullScreen
+            ></iframe>
+          `;
+        }
       }
-      return url;
     }
-    return url;
+    return linkify(url, {
+      attributes: {
+        target: '_blank',
+        class: 'link',
+      },
+    });
   });
 };
 
@@ -148,11 +145,24 @@ const nameify = (text) => {
  * @returns {string} The processed text.
  */
 export const computedStr = (text) => {
-  let result = mailify(text);
+  let result = nameify(text);
   result = phoneify(result);
-  result = linkify(result);
+  result = mailify(result);
+  result = linkify(result, {
+    attributes: {
+      target: '_blank',
+      class: 'link',
+    },
+  });
   result = youtubify(result);
-  result = nameify(result);
-
   return result;
 };
+console.log(
+  formatContent(`https://www.youtube.com/watch?v=EyvBWee-ECw&ab_channel=NhacPro-Kids ádsadsa
+
+https://www.youtu.be/0ylKp5BKxfI Hello
+
+youtube.com/watch?v=GhZML0HSli8&ab_channel=BàoNgư
+
+fullstack.edu.vn abcs`)
+);

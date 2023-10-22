@@ -8,6 +8,7 @@ import Section from '@/components/Section';
 import Button from '@/components/Button';
 import BlogPosts from '@/components/BlogPosts';
 import Tag from '@/components/Tag';
+import { Helmet } from 'react-helmet';
 const { SERVER_API, endpoint } = server;
 const pathMe = path.profile + path.me;
 const client = new HttpClient(SERVER_API);
@@ -54,14 +55,25 @@ export default function Profile({ store }) {
     getUserData();
   }, []);
   return (
-    <Section>
-      <h1 style={{ display: 'flex', gap: 12 + 'px' }}>
-        {location.pathname === pathMe ? 'Personal p' : 'P'}rofile:{' '}
-        <Tag text={userData.name} />
-      </h1>
-      <Button onClick={() => navigate(path.blogs)}>Go home</Button>
-      <BlogPosts data={userData} />
-    </Section>
+    <>
+      <Helmet>
+        <title>Profile: {userData.name}</title>
+        <meta name='og:title' content={`Trang cá nhân của ${userData.name}`} />
+        <meta
+          name='og:description'
+          content={`Đây là trang cá nhân của ${userData.name}, một blogger đam mê viết lách và chia sẻ những bài viết thú vị về các chủ đề khác nhau. Bạn có thể xem các bài viết của ${userData.name}, theo dõi, bình luận và liên hệ với ${userData.name} qua trang này.`}
+        />
+        <meta property='og:url' content={`${window.location.href}`} />
+      </Helmet>
+      <Section>
+        <h1 style={{ display: 'flex', gap: 12 + 'px' }}>
+          {location.pathname === pathMe ? 'Personal p' : 'P'}rofile:{' '}
+          <Tag text={userData.name} />
+        </h1>
+        <Button onClick={() => navigate(path.blogs)}>Về trang chủ</Button>
+        <BlogPosts data={userData} />
+      </Section>
+    </>
   );
 }
 
