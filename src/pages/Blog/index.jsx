@@ -9,7 +9,7 @@ import { endpoint as path } from '@/services/configs';
 import { format } from '@/services/helpers/string/computedStr';
 import getDate from '@/services/helpers/string/getDate';
 import Tag from '@/components/Tag';
-import { Helmet } from 'react-helmet';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 const { SERVER_API, endpoint } = server;
 const client = new HttpClient(SERVER_API);
@@ -50,7 +50,7 @@ export default function Blog() {
   } = blogStyles;
 
   return (
-    <>
+    <HelmetProvider>
       <Helmet>
         <title>Blog: {blogData.title}</title>
         <meta
@@ -96,6 +96,6 @@ export default function Blog() {
           Về trang chủ
         </Button>
       </Section>
-    </>
+    </HelmetProvider>
   );
 }

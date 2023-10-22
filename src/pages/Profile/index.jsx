@@ -8,7 +8,7 @@ import Section from '@/components/Section';
 import Button from '@/components/Button';
 import BlogPosts from '@/components/BlogPosts';
 import Tag from '@/components/Tag';
-import { Helmet } from 'react-helmet';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 const { SERVER_API, endpoint } = server;
 const pathMe = path.profile + path.me;
 const client = new HttpClient(SERVER_API);
@@ -55,7 +55,7 @@ export default function Profile({ store }) {
     getUserData();
   }, []);
   return (
-    <>
+    <HelmetProvider>
       <Helmet>
         <title>Profile: {userData.name}</title>
         <meta name='og:title' content={`Trang cá nhân của ${userData.name}`} />
@@ -73,7 +73,7 @@ export default function Profile({ store }) {
         <Button onClick={() => navigate(path.blogs)}>Về trang chủ</Button>
         <BlogPosts data={userData} />
       </Section>
-    </>
+    </HelmetProvider>
   );
 }
 

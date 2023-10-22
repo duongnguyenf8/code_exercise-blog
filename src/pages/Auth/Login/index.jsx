@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import propTypes from 'prop-types';
-import { Helmet } from 'react-helmet';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { endpoint } from '@/services/configs';
 import Button from '@/components/Button';
 import Input from '@/components/Input/Input';
@@ -89,7 +89,7 @@ export default function Login({ store }) {
 
   const { form: formStyles, auth: authStyle } = authStyles;
   return (
-    <>
+    <HelmetProvider>
       <Helmet>
         <title>{`Đăng nhập vào Blogger`}</title>
         <meta name='description' content={`Trang đăng nhập`} />
@@ -144,7 +144,7 @@ export default function Login({ store }) {
           />
         )}
       </Section>
-    </>
+    </HelmetProvider>
   );
 }
 

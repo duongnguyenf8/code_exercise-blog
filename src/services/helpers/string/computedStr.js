@@ -87,10 +87,14 @@ export const mailify = (text) => {
  * @returns {string} The youtubified text.
  */
 export const youtubify = (text) => {
-  const youtubeRegex = /(https?:\/\/(www\.)?(youtube\.com|youtu\.be)\/[^\s]+)/g;
+  const youtubeRegex =
+    /((https|http)?:\/\/(www\.)?(youtube\.com|youtu\.be)\/[^\s]+)/g;
   const stripTagARegex =
     /<a\b[^>]*>((https|http)?:\/\/(www\.)?(youtube\.com|youtu\.be)\/[^\s]+)<\/a>/gi;
+
   if (stripTagARegex.test(text) && youtubeRegex.test(text)) {
+    const regex = /<a[^>]*>((youtube\.com|youtu\.be)\/[^\s]+)<\/a>/gi;
+    text = text.replace(regex, 'https://$1');
     text = text.replace(stripTagARegex, '$1');
   }
   return text.replaceAll(youtubeRegex, function (url) {
@@ -157,12 +161,3 @@ export const computedStr = (text) => {
   result = youtubify(result);
   return result;
 };
-console.log(
-  formatContent(`https://www.youtube.com/watch?v=EyvBWee-ECw&ab_channel=NhacPro-Kids ádsadsa
-
-https://www.youtu.be/0ylKp5BKxfI Hello
-
-youtube.com/watch?v=GhZML0HSli8&ab_channel=BàoNgư
-
-fullstack.edu.vn abcs`)
-);

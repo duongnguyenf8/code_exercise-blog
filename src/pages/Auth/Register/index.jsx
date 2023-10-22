@@ -10,7 +10,7 @@ import Section from '@/components/Section';
 import Links from '@/components/Links';
 import register from '@/services/helpers/auth/register';
 import { validate } from '@/services/helpers/auth/validate';
-import { Helmet } from 'react-helmet';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 /**
  * A register component that handles user authentication.
  * @param {object} props - The props of the component.
@@ -81,7 +81,7 @@ export default function Register({ store }) {
   }, [data.email, data.password, data.name]);
   const { form: formStyles, auth: authStyle } = authStyles;
   return (
-    <>
+    <HelmetProvider>
       <Helmet>
         <title>{`Đăng ký sử dụng Blogger`}</title>
         <meta name='description' content={`Trang đăng ký`} />
@@ -140,7 +140,7 @@ export default function Register({ store }) {
           <Notify message={error} type='failed' position='bottom-left' />
         )}
       </Section>
-    </>
+    </HelmetProvider>
   );
 }
 

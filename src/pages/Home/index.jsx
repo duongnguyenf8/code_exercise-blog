@@ -5,7 +5,7 @@ import UserAction from './components/UserAction';
 import BlogPosts from '@/components/BlogPosts';
 import Notify from '@/components/Notify';
 import { TIMEOUT } from '@/services/configs';
-import { Helmet } from 'react-helmet';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 /**
  * A register component that handles user authentication.
  * @param {object} props - The props of the component.
@@ -46,7 +46,7 @@ export default function Home({ store }) {
 
   const { title: titleStyle } = homeStyles;
   return (
-    <>
+    <HelmetProvider>
       <Helmet>
         <title>Blogger</title>
         <meta name='og:title' content={`Trang chủ Blogger`} />
@@ -62,7 +62,7 @@ export default function Home({ store }) {
         <BlogPosts store={store} setMsg={setMsg} msg={msg} />
         {msg.message && <Notify message={msg.message} type={msg.type} />}
       </div>
-    </>
+    </HelmetProvider>
   );
 }
 
