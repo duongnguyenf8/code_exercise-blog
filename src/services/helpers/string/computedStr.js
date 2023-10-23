@@ -90,10 +90,10 @@ export const youtubify = (text) => {
   const youtubeRegex =
     /((https|http)?:\/\/(www\.)?(youtube\.com|youtu\.be)\/[^\s]+)/g;
   const stripTagARegex =
-    /<a\b[^>]*>((https|http)?:\/\/(www\.)?(youtube\.com|youtu\.be)\/[^\s]+)<\/a>/gi;
+    /<a[^>]*>((https|http)?:\/\/(www\.)?(youtube\.com|youtu\.be)\/[^\s]+)<\/a>/gi;
 
   if (stripTagARegex.test(text) && youtubeRegex.test(text)) {
-    const regex = /<a[^>]*>((youtube\.com|youtu\.be)\/[^\s]+)<\/a>/gi;
+    const regex = /<a[^>]*>((www\.)?(youtube\.com|youtu\.be)\/[^\s]+)<\/a>/gi;
     text = text.replace(regex, 'https://$1');
     text = text.replace(stripTagARegex, '$1');
   }
