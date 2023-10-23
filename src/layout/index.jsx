@@ -1,7 +1,7 @@
 import propTypes from 'prop-types';
-import Header from '@/layout/Header';
-import Main from '@/layout/Main';
-import Footer from '@/layout/Footer';
+import Header from './Header';
+import Main from './Main';
+import Footer from './Footer';
 import Tag from '@/components/Tag';
 
 /**
