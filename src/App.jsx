@@ -1,12 +1,15 @@
-import Layout from '../../next37/src/layout';
+import { BrowserRouter } from 'react-router-dom';
+import Layout from '@/layout';
 import Router from '@/routes';
 import './assets/styles/styles.scss';
 
 function App() {
   return (
-    <Layout>
-      <Router />
-    </Layout>
+    <BrowserRouter>
+      <Layout>
+        <Router />
+      </Layout>
+    </BrowserRouter>
   );
 }
 
