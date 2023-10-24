@@ -24,6 +24,15 @@
   }
 }
 
+.mbsc-textfield-wrapper-inline {
+  flex-direction: column;
+  background: transparent !important;
+  .mbsc-label-inline {
+    padding-left: 0 !important;
+    width: 100% !important;
+  }
+}
+
 .mbsc-popup-content,
 .mbsc-datepicker .mbsc-calendar-slide {
   background: var(--background-color-gray, #30445b) !important;
