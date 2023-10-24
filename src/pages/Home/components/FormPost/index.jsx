@@ -68,7 +68,7 @@ export default function FormPost({ store, setMsg, msg }) {
         const timePost = datePost + ' ' + hours + ':' + mins;
         // body.timeUp = timePost;
         //console.log(timePost);
-        setTimeout(() => resetForm(), 5000);
+        // setTimeout(() => resetForm(), 5000);
         return timePost;
       }
       action('loading', true);
@@ -161,7 +161,7 @@ export default function FormPost({ store, setMsg, msg }) {
         min={new Date()}
         value={picker.date}
         onChange={(e) => {
-          setDate({ useDate: true, date: e.value });
+          setDate({ useDate: true, date: e.value, label: "Set time to posts!" });
         }}
       />
       <Button

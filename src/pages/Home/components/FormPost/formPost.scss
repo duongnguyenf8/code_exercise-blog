@@ -27,9 +27,12 @@
 .mbsc-textfield-wrapper-inline {
   flex-direction: column;
   background: transparent !important;
+
   .mbsc-label-inline {
     padding-left: 0 !important;
-    width: 100% !important;
+    display: block !important;
+    width: 600px !important;
+    overflow: visible !important;
   }
 }
 
