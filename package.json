@@ -11,7 +11,11 @@
         "preview": "vite preview --port 80 --host "
     },
     "dependencies": {
+        "@emotion/react": "^11.11.1",
+        "@emotion/styled": "^11.11.0",
         "@mobiscroll/react": "npm:@mobiscroll/react-trial@^5.27.1",
+        "@mui/x-date-pickers": "^6.17.0",
+        "dayjs": "^1.11.10",
         "linkify-html": "^4.1.1",
         "moment": "^2.29.4",
         "react": "^18.2.0",

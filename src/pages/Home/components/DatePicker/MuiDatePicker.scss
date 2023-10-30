@@ -1,0 +1,19 @@
+form .MuiFormControl-root {
+    width: 400px;
+    margin-top: 20px;
+    background-color: #30445b;
+    // outline: 1px solid #fff;
+    border-radius: 3px;
+}
+
+form .MuiFormControl-root .MuiFormLabel-root {
+    font-size: 16px;
+    top: -4px;
+    color: #ccc;
+    font-weight: 500;
+}
+
+form .MuiInputBase-root input {
+    color: #ccc;
+    font-size: 16px;
+}
