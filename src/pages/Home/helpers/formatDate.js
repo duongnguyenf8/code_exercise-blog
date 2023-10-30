@@ -5,7 +5,9 @@ export function formatDate(time) {
   const year = date.getFullYear();
   const currentHours = new Date().getHours();
   const currentMinutes = new Date().getMinutes();
-  return `${day}/${month + 1}/${year} ${currentHours}h:${currentMinutes}phút`;
+  return `${day}/${
+    month + 1
+  }/${year} ${currentHours} giờ : ${currentMinutes} phút`;
 }
 
 export function calculateTimeDifference(selectedTime) {

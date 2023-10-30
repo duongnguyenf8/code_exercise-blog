@@ -2,7 +2,7 @@
 export function accessToast(msg) {
   Toastify({
     text: msg,
-    duration: 3000,
+    duration: 5000,
     destination: "",
     newWindow: true,
     close: true,
@@ -13,6 +13,7 @@ export function accessToast(msg) {
       background: "blueviolet",
       borderRadius: "10px",
       color: "#fff",
+      width: "fit-content",
     },
   }).showToast();
 }
@@ -20,7 +21,7 @@ export function accessToast(msg) {
 export function failedToast(msg) {
   Toastify({
     text: msg,
-    duration: 3000,
+    duration: 5000,
     destination: "",
     newWindow: true,
     close: true,

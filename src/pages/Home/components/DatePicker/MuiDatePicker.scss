@@ -3,12 +3,12 @@ form .MuiFormControl-root {
     margin-top: 20px;
     background-color: #30445b;
     // outline: 1px solid #fff;
-    border-radius: 3px;
+    border-radius: 4px;
 }
 
 form .MuiFormControl-root .MuiFormLabel-root {
     font-size: 16px;
-    top: -4px;
+    top: -2px;
     color: #ccc;
     font-weight: 500;
 }
@@ -16,4 +16,10 @@ form .MuiFormControl-root .MuiFormLabel-root {
 form .MuiInputBase-root input {
     color: #ccc;
     font-size: 16px;
+}
+
+form svg {
+    width: 1.8em !important;
+    height: 1.8em !important;
+    fill: #fff !important;
 }
